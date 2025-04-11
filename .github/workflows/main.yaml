@@ -60,3 +60,5 @@ jobs:
           KEY_PEM: ${{ secrets.KEY_PEM }}
           CA_PEM: ${{ secrets.CA_PEM }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          TAG: ${{ needs.build.outputs.short_sha }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
