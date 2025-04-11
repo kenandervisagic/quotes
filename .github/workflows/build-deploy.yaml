@@ -52,7 +52,6 @@ jobs:
         run: |
           chmod +x ./docker-tls-setup.sh
           source docker-tls-setup.sh
-          docker-compose down --rmi all
           docker-compose up -d
         env:
           DOCKER_HOST: ${{ secrets.DOCKER_HOST }}
