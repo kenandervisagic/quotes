@@ -15,6 +15,16 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # or match your project version
+
+      - name: Install dependencies and run lint
+        run: |
+          npm ci
+          npm run lint
+
       - name: Build Docker Images (no push)
         run: |
           cp .docker/* .
