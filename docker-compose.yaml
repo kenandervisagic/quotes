@@ -15,7 +15,7 @@ services:
     networks:
       - webnet
     environment:
-      - SLACK_WEBHOOK=${{ secrets.SLACK_WEBHOOK }}
+      - SLACK_WEBHOOK=$SLACK_WEBHOOK
     restart: on-failure
 
   nginx-gateway:
