@@ -8,6 +8,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest # Choose the runner environment
+    env:
+      DOCKER_HOST: ${{ secrets.DOCKER_HOST }}
+      CERT_PEM: ${{ secrets.CERT_PEM }}
+      KEY_PEM: ${{ secrets.KEY_PEM }}
+      CA_PEM: ${{ secrets.CA_PEM }}
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3 # Checkout the repository code
@@ -21,28 +29,24 @@ jobs:
           curl -L https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
           chmod +x /usr/local/bin/docker-compose
 
-      - name: Run Docker TLS setup
+      - name: Build Frontend Docker image
         run: |
           chmod +x ./docker-tls-setup.sh
           source docker-tls-setup.sh
-        env:
-          DOCKER_HOST: ${{ secrets.DOCKER_HOST }}
-          CERT_PEM: ${{ secrets.CERT_PEM }}
-          KEY_PEM: ${{ secrets.KEY_PEM }}
-          CA_PEM: ${{ secrets.CA_PEM }}
 
-      - name: Build Frontend Docker image
-        run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_frontend:${{ github.sha }} .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_frontend:${{ github.sha::5 }} .
 
       - name: Build Backend Docker image
         run: |
+          chmod +x ./docker-tls-setup.sh
+          source docker-tls-setup.sh
+
           cd backend/
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_backend:${{ github.sha }} .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_backend:${{ github.sha::5 }} .
 
       - name: Run Docker Compose
         run: |
+          chmod +x ./docker-tls-setup.sh
+          source docker-tls-setup.sh
+
           docker-compose up -d
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
