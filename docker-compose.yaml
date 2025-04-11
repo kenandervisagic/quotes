@@ -1,8 +1,6 @@
 services:
-
   frontend:
-    build:
-      context: .
+    image: "$DOCKER_USERNAME/anonymous_quotes_frontend:$GITHUB_SHA"
     container_name: react-frontend
     expose:
       - 80
@@ -10,15 +8,14 @@ services:
       - webnet
 
   backend:
-    build:
-      context: ./backend
+    image: "$DOCKER_USERNAME/anonymous_quotes_backend:$GITHUB_SHA"
     container_name: python-backend
     expose:
       - 8000
     networks:
       - webnet
     environment:
-      - SLACK_WEBHOOK=${SLACK_WEBHOOK}
+      - SLACK_WEBHOOK=${{ secrets.SLACK_WEBHOOK }}
     restart: on-failure
 
   nginx-gateway:
@@ -28,10 +25,10 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./logs/nginx-access.log:/var/log/nginx/access.log
-      - ./nginx/certificates:/etc/letsencrypt
-      - ./nginx/certificates-data:/data/certbot
+      - /home/ubuntu/website/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - /home/ubuntu/website/logs/nginx-access.log:/var/log/nginx/access.log
+      - /home/ubuntu/website/nginx/certificates:/etc/letsencrypt
+      - /home/ubuntu/website/nginx/certificates-data:/data/certbot
     depends_on:
       - frontend
     networks:
@@ -41,8 +38,8 @@ services:
     image: certbot/certbot
     container_name: certbot
     volumes:
-      - ./nginx/certificates:/etc/letsencrypt
-      - ./nginx/certificates-data:/data/certbot
+      - /home/ubuntu/website/nginx/certificates:/etc/letsencrypt
+      - /home/ubuntu/website/nginx/certificates-data:/data/certbot
     entrypoint: >
       sh -c "
         while :; do
