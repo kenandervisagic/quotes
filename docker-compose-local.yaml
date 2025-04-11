@@ -28,7 +28,7 @@ services:
     networks:
       - webnet
     environment:
-      - SLACK_WEBHOOK=https://hooks.slack.com/services/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
+      - SLACK_WEBHOOK=https://hooks.slack.com/services/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
       - ENVIRONMENT=local
       - PYTHONUNBUFFERED=1
     restart: on-failure
