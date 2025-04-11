@@ -68,7 +68,6 @@ function App() {
         // Save to localStorage
         localStorage.setItem('submissionHistory', JSON.stringify(submissionHistory));
 
-        // Check if rate limited after new submission
         checkRateLimit();
     };
 
@@ -87,12 +86,10 @@ function App() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Check rate limiting first
         if (isRateLimited) {
             return;
         }
 
-        // Validate message content
         if (!isValidMessage(message)) {
             return;
         }
@@ -102,15 +99,12 @@ function App() {
         setMessage('');
         setSubmitted(true);
 
-        // Update submission history for rate limiting
         updateSubmissionHistory();
 
-        // Prepare the payload for the POST request
         const payload = {
             content: message
         };
 
-        // Send a POST request to the backend
         try {
             const response = await fetch(`${apiBaseUrl}/submit-message`, {
                 method: 'POST',
