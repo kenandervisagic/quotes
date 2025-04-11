@@ -34,7 +34,7 @@ jobs:
           chmod +x ./docker-tls-setup.sh
           source docker-tls-setup.sh
 
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_frontend:${{ github.sha::5 }} .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_frontend:${{ github.sha }} .
 
       - name: Build Backend Docker image
         run: |
@@ -42,7 +42,7 @@ jobs:
           source docker-tls-setup.sh
 
           cd backend/
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_backend:${{ github.sha::5 }} .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_backend:${{ github.sha }} .
 
       - name: Run Docker Compose
         run: |
