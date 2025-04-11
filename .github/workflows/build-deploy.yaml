@@ -19,7 +19,7 @@ jobs:
 
       - name: Set short SHA
         id: set_output
-        run: echo "short_sha=${GITHUB_SHA::5}" >> $GITHUB_OUTPUT
+        run: echo "short_sha=${GITHUB_SHA::10}" >> $GITHUB_OUTPUT
 
       - name: Docker TLS Setup + Build Images
         run: |

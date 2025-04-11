@@ -9,8 +9,6 @@ RUN npm ci
 
 COPY . .
 
-RUN ls /app
-
 RUN npm run build
 
 FROM nginx:alpine
