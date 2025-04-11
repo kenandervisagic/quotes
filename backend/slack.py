@@ -1,10 +1,13 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 from pydantic import BaseModel
 import requests
 import os
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# Create a router for versioning
+api_router = APIRouter()
 
 # Allow only specific origin (kdidp.art) for CORS
 origins = [
@@ -16,7 +19,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,  # Allows requests only from kdidp.art
     allow_credentials=True,
-    allow_methods=["POST"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_methods=["POST"],  # Allow POST method
     allow_headers=["*"],  # Allow all headers
 )
 
@@ -25,9 +28,9 @@ class Message(BaseModel):
     content: str
 
 # Get the Slack webhook URL from the environment variable
-SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL")
+SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK")
 
-@app.post("/submit-message")
+@api_router.post("/submit-message")
 async def send_message(message: Message):
     if not SLACK_WEBHOOK_URL:
         return {"status": "Error", "message": "Slack webhook URL not set in environment"}
@@ -44,4 +47,5 @@ async def send_message(message: Message):
     else:
         return {"status": "Failed to send message to Slack", "error": response.text}
 
-
+# Include the API router with the prefix
+app.include_router(api_router, prefix="/api/v1")
