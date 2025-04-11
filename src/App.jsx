@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
 
+
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://kdidp.art/api/v1';
 function App() {
     const [message, setMessage] = useState('');
     const [submitted, setSubmitted] = useState(false);
@@ -110,7 +112,7 @@ function App() {
 
         // Send a POST request to the backend
         try {
-            const response = await fetch('https://kdidp.art/api/v1/submit-message', {
+            const response = await fetch(`${apiBaseUrl}/submit-message`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

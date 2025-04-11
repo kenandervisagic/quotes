@@ -1,1 +1,9 @@
 backend/
+.env.local
+docker-tls-setup.sh
+local.Dockerfile
+Dockerfile
+README.md
+.github
+docker-compose-local.yaml
+docker-compose.yaml

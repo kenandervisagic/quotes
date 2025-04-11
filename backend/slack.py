@@ -9,10 +9,17 @@ app = FastAPI()
 # Create a router for versioning
 api_router = APIRouter()
 
+ENVIRONMENT = os.getenv("ENVIRONMENT", "local")
+
 # Allow only specific origin (kdidp.art) for CORS
-origins = [
-    "https://kdidp.art",
-]
+if ENVIRONMENT == "local":
+    origins = [
+        "*",  # Allow all origins in local environment
+    ]
+else:
+    origins = [
+        "https://kdidp.art",  # Only allow requests from the production domain
+    ]
 
 # Add CORS middleware to the app
 app.add_middleware(
