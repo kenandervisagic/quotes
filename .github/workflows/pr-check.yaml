@@ -17,6 +17,7 @@ jobs:
 
       - name: Build Docker Images (no push)
         run: |
+          cp .docker/* .
           docker build -t temp/frontend:pr .
           cd backend/
           docker build -t temp/backend:pr .
