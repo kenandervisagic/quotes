@@ -62,7 +62,6 @@ function App() {
         const submissionHistory = JSON.parse(localStorage.getItem('submissionHistory')) || [];
         const now = Date.now();
 
-        // Add current timestamp
         submissionHistory.push(now);
 
         // Save to localStorage
