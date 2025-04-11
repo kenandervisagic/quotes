@@ -24,12 +24,12 @@ jobs:
       - name: Docker TLS Setup + Build Images
         run: |
           chmod +x ./docker-tls-setup.sh
-          ./docker-tls-setup.sh
+          source docker-tls-setup.sh
 
-          docker build -t  ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_frontend:${{ steps.set_output.outputs.short_sha }} .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_frontend:${{ steps.set_output.outputs.short_sha }} .
 
           cd backend/
-          docker build -t  ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_backend:${{ steps.set_output.outputs.short_sha }} .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_backend:${{ steps.set_output.outputs.short_sha }} .
         env:
           DOCKER_HOST: ${{ secrets.DOCKER_HOST }}
           CERT_PEM: ${{ secrets.CERT_PEM }}
@@ -51,7 +51,7 @@ jobs:
       - name: Docker TLS Setup + Docker Compose
         run: |
           chmod +x ./docker-tls-setup.sh
-          ./docker-tls-setup.sh
+          source docker-tls-setup.sh
 
           docker-compose up -d
         env:
