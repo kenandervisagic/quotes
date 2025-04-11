@@ -12,5 +12,5 @@ mkdir -p $DOCKER_CERT_PATH
 echo "$CERT_PEM" | base64 --decode > $DOCKER_CERT_PATH/cert.pem
 echo "$KEY_PEM" | base64 --decode > $DOCKER_CERT_PATH/key.pem
 echo "$CA_PEM" | base64 --decode > $DOCKER_CERT_PATH/ca.pem
-
+printenv
 echo "Docker TLS setup complete"
