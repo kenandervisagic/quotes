@@ -1,0 +1,363 @@
+
+/* Import Reenie Beanie font */
+@import url('https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap');
+
+/* Reset and global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Reenie Beanie', cursive;
+}
+
+html, body {
+    height: 100%;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Main container with paper texture */
+.app-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #d9bda5;
+    background-image: url("assets/light-paper-fibers.png");
+    position: relative;
+    overflow: hidden;
+}
+
+/* Header styling */
+.header {
+    width: 100%;
+    padding: 15px;
+    background-color: #e5cbba;
+    border-bottom: 1px solid #A47864;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.header h1 {
+    font-size: 1.8rem;
+    color: #333;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+}
+
+/* Main content area */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+/* Paper card container */
+.paper-card {
+    width: 100%;
+    max-width: 500px;
+    background-color: rgba(229, 222, 207, 0.8);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+/* Page title */
+.page-title {
+    font-size: 2.3rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    line-height: 1.2;
+}
+.footer-message {
+    margin-top: 20px;
+    color: #555;
+    font-size: 18px;
+    text-align: center;
+}
+
+.footer-message a {
+    color: #85614f; /* TikTok color or any color you prefer */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.footer-message a:hover {
+    text-decoration: underline;
+}
+
+
+/* Explanation text */
+.explanation {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 2rem;
+    text-align: center;
+    line-height: 1.4;
+}
+
+/* Form styling */
+.message-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Textarea container */
+.textarea-container {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.textarea-container:hover {
+    transform: scale(1.01);
+}
+
+/* Textarea styling */
+.message-textarea {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px solid #d9bda5;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-size: 1.3rem;
+    resize: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.message-textarea:focus {
+    outline: none;
+    border-color: #c8ac96;
+    box-shadow: 0 0 0 3px rgba(200, 172, 150, 0.2);
+}
+
+/* Submit button */
+.submit-button {
+    padding: 0.6rem 2rem;
+    background-color: #d9bda5;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #c8ac96;
+    transform: scale(1.05);
+}
+
+/* Thank you message styling */
+.thank-you-message {
+    text-align: center;
+    padding: 2rem 0;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.thank-you-message h3 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.thank-you-message p {
+    color: #555;
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+
+/* Decorative elements */
+.decorative-circle {
+    position: fixed;
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.circle-1 {
+    width: 250px;
+    height: 250px;
+    bottom: -100px;
+    right: -100px;
+    background-color: #e5cbba;
+    opacity: 0.2;
+}
+
+.circle-2 {
+    width: 200px;
+    height: 200px;
+    top: -80px;
+    left: -80px;
+    background-color: #c8ac96;
+    opacity: 0.1;
+}
+
+/* Romantic Paintings Styling */
+.painting {
+    position: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 5px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    opacity: 0.5;
+    z-index: 1;
+}
+
+.message-textarea:disabled {
+    background-color: rgba(229, 222, 207, 0.5);
+    cursor: not-allowed;
+    color: #999;
+}
+
+.submit-button:disabled {
+    background-color: #c0b5a5;
+    cursor: not-allowed;
+    transform: none;
+    opacity: 0.7;
+}
+
+/* Rate limit message styling */
+.rate-limit-message {
+    background-color: rgba(208, 176, 158, 0.3);
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: #85614f;
+    border: 1px solid rgba(164, 120, 100, 0.3);
+}
+
+/* Submissions counter */
+.submissions-counter {
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+    color: #85614f;
+    opacity: 0.8;
+    text-align: center;
+    font-style: italic;
+}
+
+.top-left-painting {
+    /* Renamed class but keeping the same name in the code for simplicity */
+    width: 15vw;
+    height: 20vh;
+    max-width: 200px;
+    max-height: 150px;
+    bottom: 10vh; /* Changed from top to bottom positioning */
+    left: 5vw;
+    transform: rotate(-8deg);
+    background-image: url("assets/image_1.png"); /* Romantic landscape painting */
+    z-index: 0;
+}
+
+/* Bottom right painting - keeping the same position but adjusting slightly */
+.bottom-right-painting {
+    width: 18vw;
+    height: 25vh;
+    max-width: 220px;
+    max-height: 180px;
+    bottom: 10vh;
+    right: 5vw;
+    transform: rotate(10deg);
+    background-image: url("assets/image_3.jpg"); /* Romantic garden painting */
+    z-index: 0;
+}
+
+
+
+.small-painting-corner-right {
+    position: absolute;
+    width: 60px;
+    height: 45px;
+    bottom: -15px;
+    right: -15px;
+    background-image: url("assets/image_8.jpg"); /* Small romantic painting detail */
+    background-size: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+    opacity: 0.8;
+    transform: rotate(8deg);
+}
+
+.small-painting-corner-left {
+    position: absolute;
+    width: 60px;
+    height: 45px;
+    bottom: -15px;
+    left: -15px;
+    background-image: url("assets/image_13.jpg"); /* Small romantic painting detail */
+    background-size: cover;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+    opacity: 0.8;
+    transform: rotate(-8deg);
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+    .paper-card {
+        padding: 1.5rem;
+    }
+
+    .page-title {
+        font-size: 1.9rem;
+    }
+
+    .explanation {
+        font-size: 1.4rem;
+    }
+
+    .message-textarea {
+        font-size: 1.4rem;
+        padding: 0.8rem;
+    }
+
+    .submit-button {
+        font-size: 1.2rem;
+        padding: 0.5rem 1.8rem;
+    }
+
+    .top-left-painting {
+        width: 100%;
+        height: 15vh;
+        bottom: 20vh; /* Adjusted for mobile */
+        left: 3vw;
+    }
+    .footer-message {
+        margin-top: 20px;
+        font-size: 22px;
+        text-align: center;
+    }
+    .bottom-right-painting {
+        width: 100%;
+        height: 20vh;
+        bottom: 5vh;
+        right: 2vw;
+    }
+}

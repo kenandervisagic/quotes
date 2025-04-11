@@ -1,0 +1,56 @@
+services:
+
+  frontend:
+    build:
+      context: .
+    container_name: react-frontend
+    expose:
+      - 80
+    networks:
+      - webnet
+
+  backend:
+    build:
+      context: ./backend
+    container_name: python-backend
+    expose:
+      - 8000
+    networks:
+      - webnet
+    environment:
+      - SLACK_WEBHOOK=${SLACK_WEBHOOK}
+    restart: on-failure
+
+  nginx-gateway:
+    image: nginx:alpine
+    container_name: nginx-gateway
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./logs/nginx-access.log:/var/log/nginx/access.log
+      - ./nginx/certificates:/etc/letsencrypt
+      - ./nginx/certificates-data:/data/certbot
+    depends_on:
+      - frontend
+    networks:
+      - webnet
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./nginx/certificates:/etc/letsencrypt
+      - ./nginx/certificates-data:/data/certbot
+    entrypoint: >
+      sh -c "
+        while :; do
+          certbot renew;
+          sleep 12h & wait $${!};
+        done"
+    networks:
+      - webnet
+
+networks:
+  webnet:
