@@ -1,0 +1,38 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: local.Dockerfile
+    container_name: react-frontend
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    env_file:
+      - .env.local
+    ports:
+      - "3000:3000"
+    networks:
+      - webnet
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: local.Dockerfile
+    container_name: python-backend
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    networks:
+      - webnet
+    environment:
+      - SLACK_WEBHOOK=https://hooks.slack.com/services/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
+      - ENVIRONMENT=local
+      - PYTHONUNBUFFERED=1
+    restart: on-failure
+
+
+networks:
+  webnet:
