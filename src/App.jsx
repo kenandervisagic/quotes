@@ -194,7 +194,7 @@ function App() {
                             <button
                                 type="submit"
                                 className="submit-button"
-                                disabled={isRateLimited}
+                                disabled={isRateLimited }
                             >
                                 Submit
                             </button>
