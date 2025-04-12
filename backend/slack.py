@@ -37,6 +37,10 @@ class Message(BaseModel):
 # Get the Slack webhook URL from the environment variable
 SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK")
 
+@api_router.get("/health", response_class=JSONResponse)
+async def health():
+    return {"status": "ok"}
+
 @api_router.post("/submit-message")
 async def send_message(message: Message):
     if not SLACK_WEBHOOK_URL:
