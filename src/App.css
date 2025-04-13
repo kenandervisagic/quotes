@@ -7,10 +7,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Reenie Beanie', cursive;
 }
 
 html, body {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
     height: 100%;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -36,6 +37,7 @@ html, body {
     border-bottom: 1px solid #A47864;
     text-align: center;
     position: relative;
+    font-family: 'Reenie Beanie', cursive;
     z-index: 2;
 }
 
@@ -71,7 +73,7 @@ html, body {
 
 /* Page title */
 .page-title {
-    font-size: 2.3rem;
+    font-size: 1rem;
     color: #333;
     margin-bottom: 1.5rem;
     text-align: center;
@@ -80,13 +82,13 @@ html, body {
 .footer-message {
     margin-top: 20px;
     color: #555;
-    font-size: 18px;
+    font-size: 0.8rem;
     text-align: center;
 }
 
 .footer-message a {
     color: #85614f; /* TikTok color or any color you prefer */
-    text-decoration: none;
+    text-decoration: underline;
     font-weight: bold;
 }
 
@@ -97,7 +99,7 @@ html, body {
 
 /* Explanation text */
 .explanation {
-    font-size: 1.2rem;
+    font-size: 0.8rem;
     color: #555;
     margin-bottom: 2rem;
     text-align: center;
@@ -113,6 +115,7 @@ html, body {
 
 /* Textarea container */
 .textarea-container {
+
     width: 100%;
     margin-bottom: 1.5rem;
     transition: transform 0.3s ease;
@@ -125,13 +128,15 @@ html, body {
 
 /* Textarea styling */
 .message-textarea {
+    font-family: "Inter", sans-serif;
+
     width: 100%;
     padding: 1rem;
     border-radius: 10px;
     border: 1px solid #d9bda5;
     background-color: rgba(255, 255, 255, 0.9);
     color: #333;
-    font-size: 1.3rem;
+    font-size: 0.8rem;
     resize: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
@@ -150,7 +155,7 @@ html, body {
     color: white;
     border: none;
     border-radius: 30px;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
@@ -169,12 +174,13 @@ html, body {
 }
 
 .thank-you-message h3 {
-    font-size: 1.8rem;
+    font-size: 1.3rem;
     color: #333;
     margin-bottom: 1rem;
 }
 
 .thank-you-message p {
+    font-size: 0.8rem;
     color: #555;
     font-style: italic;
     margin-bottom: 1rem;
@@ -251,62 +257,6 @@ html, body {
     font-style: italic;
 }
 
-.top-left-painting {
-    /* Renamed class but keeping the same name in the code for simplicity */
-    width: 15vw;
-    height: 20vh;
-    max-width: 200px;
-    max-height: 150px;
-    bottom: 10vh; /* Changed from top to bottom positioning */
-    left: 5vw;
-    transform: rotate(-8deg);
-    background-image: url("assets/image_1.png"); /* Romantic landscape painting */
-    z-index: 0;
-}
-
-/* Bottom right painting - keeping the same position but adjusting slightly */
-.bottom-right-painting {
-    width: 18vw;
-    height: 25vh;
-    max-width: 220px;
-    max-height: 180px;
-    bottom: 10vh;
-    right: 5vw;
-    transform: rotate(10deg);
-    background-image: url("assets/image_3.jpg"); /* Romantic garden painting */
-    z-index: 0;
-}
-
-
-
-.small-painting-corner-right {
-    position: absolute;
-    width: 60px;
-    height: 45px;
-    bottom: -15px;
-    right: -15px;
-    background-image: url("assets/image_8.jpg"); /* Small romantic painting detail */
-    background-size: cover;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
-    opacity: 0.8;
-    transform: rotate(8deg);
-}
-
-.small-painting-corner-left {
-    position: absolute;
-    width: 60px;
-    height: 45px;
-    bottom: -15px;
-    left: -15px;
-    background-image: url("assets/image_13.jpg"); /* Small romantic painting detail */
-    background-size: cover;
-    border-radius: 4px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
-    opacity: 0.8;
-    transform: rotate(-8deg);
-}
-
 /* Fade in animation */
 @keyframes fadeIn {
     from {
@@ -326,38 +276,27 @@ html, body {
     }
 
     .page-title {
-        font-size: 1.9rem;
+        font-size: 1.1rem;
     }
 
     .explanation {
-        font-size: 1.4rem;
+        font-size: 0.9rem;
     }
 
     .message-textarea {
-        font-size: 1.4rem;
+        font-size: 0.75rem;
         padding: 0.8rem;
     }
 
     .submit-button {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         padding: 0.5rem 1.8rem;
     }
 
-    .top-left-painting {
-        width: 100%;
-        height: 15vh;
-        bottom: 20vh; /* Adjusted for mobile */
-        left: 3vw;
-    }
     .footer-message {
         margin-top: 20px;
-        font-size: 22px;
+        font-size: 0.80rem;
         text-align: center;
     }
-    .bottom-right-painting {
-        width: 100%;
-        height: 20vh;
-        bottom: 5vh;
-        right: 2vw;
-    }
+
 }
