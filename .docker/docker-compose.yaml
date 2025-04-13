@@ -6,6 +6,7 @@ services:
       - 80
     networks:
       - webnet
+    restart: always
 
   backend:
     image: "$DOCKER_USERNAME/anonymous_quotes_backend:$TAG"
@@ -16,7 +17,7 @@ services:
       - webnet
     environment:
       - SLACK_WEBHOOK=$SLACK_WEBHOOK
-    restart: on-failure
+    restart: always
 
   nginx-gateway:
     image: nginx:alpine
@@ -33,6 +34,7 @@ services:
       - frontend
     networks:
       - webnet
+    restart: always
 
   certbot:
     image: certbot/certbot
@@ -48,6 +50,7 @@ services:
         done"
     networks:
       - webnet
+    restart: on-failure
 
 networks:
   webnet:
