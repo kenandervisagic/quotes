@@ -140,8 +140,6 @@ function App() {
                 <h1>the words left behind</h1>
             </header>
             {/* Decorative Paintings */}
-            <div className="painting top-left-painting"></div>
-            <div className="painting bottom-right-painting"></div>
             <main className="main-content">
                 <div className="paper-card">
                     <h2 className="page-title">Submit an Anonymous Message</h2>
@@ -177,8 +175,6 @@ function App() {
                                     className="message-textarea"
                                     disabled={isRateLimited}
                                 />
-                                <div className="small-painting-corner-right"></div>
-                                <div className="small-painting-corner-left"></div>
                             </div>
 
                             {isRateLimited && (
@@ -199,7 +195,8 @@ function App() {
                     {/* Add TikTok link below */}
                     <div className="footer-message">
                         <p>Want to explore other anonymous messages? <br/>
-                            Check them out on our <a href="https://www.tiktok.com/@the_words_left_behind" target="_blank" rel="noopener noreferrer">TikTok</a>.</p>
+                            Check them out on our <a href="https://www.tiktok.com/@the_words_left_behind" target="_blank" rel="noopener noreferrer">TikTok</a> or  <a href="https://www.tiktok.com/@the_words_left_behind" target="_blank" rel="noopener noreferrer">Instagram</a>.
+                        </p>
                     </div>
                 </div>
             </main>
