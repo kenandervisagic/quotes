@@ -30,6 +30,7 @@ services:
       - /home/ubuntu/website/logs/nginx-access.log:/var/log/nginx/access.log
       - /home/ubuntu/website/nginx/certificates:/etc/letsencrypt
       - /home/ubuntu/website/nginx/certificates-data:/data/certbot
+      - /home/ubuntu/website/nginx/.htpasswd:/etc/nginx/.htpasswd
     depends_on:
       - frontend
     networks:
