@@ -65,3 +65,5 @@ jobs:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           TAG: ${{ needs.build.outputs.short_sha }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          PG_USER: ${{secrets.PG_USER}}
+          PG_PASSWORD: ${{secrets.PG_PASSWORD}}
