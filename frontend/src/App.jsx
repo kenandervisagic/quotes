@@ -133,17 +133,18 @@ function App() {
             checkRateLimit();
         }
     };
-    const quotes = [
-        "Sometimes the silence is louder than words.",
-        "The only way to deal with this life meaningfully is to find one's passion.",
-        "It's okay to feel lost sometimes. You’re still on your way.",
-        "Our lives begin to end the day we become silent about things that matter.",
-        "Let your heart be your compass.",
-        "In the end, we only regret the chances we didn’t take.",
-        "Healing is not linear. Some days are better, some days are harder.",
-        "Your scars are proof that you’re stronger than you think.",
-        "Do what you love and you'll never work a day in your life.",
-        "Life is short. Live it in a way that makes you feel alive."
+    const reels = [
+        "DIo73eDsa3j",
+        "DIjUAsEM1-d",
+        "DIdK4sdszhx",
+        "DIgMxQ9MW7_",
+        "DIcakMyo8Wv",
+        "DIlN7i2MTWj",
+        "DIcYHIGM7OB",
+        "DIb787WM5mf",
+        "DIbRs0xMxZf",
+        "DIZ40nwIs0e",
+        "DIZgZoWMSNk"
     ];
 
 
@@ -199,7 +200,7 @@ function App() {
                             <button
                                 type="submit"
                                 className="submit-button"
-                                disabled={isRateLimited }
+                                disabled={isRateLimited}
                             >
                                 Submit
                             </button>
@@ -208,22 +209,34 @@ function App() {
                     {/* Add TikTok link below */}
                     <div className="footer-message">
                         <p>Want to explore other anonymous messages? <br/>
-                            Check them out on our <a href="https://www.tiktok.com/@the_words_left_behind" target="_blank" rel="noopener noreferrer">TikTok</a> or  <a href="https://www.instagram.com/the_words_left_behind" target="_blank" rel="noopener noreferrer">Instagram</a>.
+                            Check them out on our <a href="https://www.tiktok.com/@the_words_left_behind"
+                                                     target="_blank" rel="noopener noreferrer">TikTok</a> or <a
+                                href="https://www.instagram.com/the_words_left_behind" target="_blank"
+                                rel="noopener noreferrer">Instagram</a>.
                         </p>
                     </div>
 
-                    {/* Quotes Section */}
-                    <div className="quotes-container">
-                        <h3 className="quotes-title">Quotes to Inspire</h3>
-                        <div className="quotes-boxes">
-                            {quotes.map((quote, index) => (
-                                <div key={index} className="quote-box">
-                                    <p>{quote}</p>
-                                </div>
-                            ))}
-                        </div>
+                </div>
+                {/* Reels Section */}
+                <div className="quotes-container">
+                    <h2 className="section-title">Recent Submissions</h2> {/* Title for the section */}
+
+                    <div className="quotes-boxes">
+                        {reels.map((reelUrl, index) => (
+                            <div key={index} className="quote-box">
+                                <iframe
+                                    src={`https://www.instagram.com/reel/${reelUrl}/embed`}
+                                    frameBorder="0"
+                                    scrolling="no"
+                                    allowFullScreen
+                                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                                    title={`Instagram Reel ${index + 1}`}
+                                ></iframe>
+                            </div>
+                        ))}
                     </div>
                 </div>
+
             </main>
         </div>
     );

@@ -27,10 +27,11 @@ jobs:
         
           chmod +x ./docker-tls-setup.sh
           source docker-tls-setup.sh
-
+          
+          cd $GITHUB_WORKSPACE/frontend/
           docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_frontend:${{ steps.set_output.outputs.short_sha }} .
 
-          cd backend/
+          cd $GITHUB_WORKSPACE/backend/
           docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_backend:${{ steps.set_output.outputs.short_sha }} .
         env:
           DOCKER_HOST: ${{ secrets.DOCKER_HOST }}

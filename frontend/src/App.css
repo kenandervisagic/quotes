@@ -257,6 +257,57 @@ html, body {
     font-style: italic;
 }
 
+/* Additional Styles for Quotes */
+.quotes-container {
+    background-color: rgba(229, 222, 207, 0.8); /* Semi-transparent background */
+    backdrop-filter: blur(20px); /* Creates the frosted glass effect */
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin: 30px auto;
+    text-align: center;
+}
+
+.quotes-boxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Adjusted for better spacing */
+    gap: 15px;
+}
+
+.quote-box {
+    padding: 0;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-style: italic;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Ensures iframe doesn't spill out */
+    height: 400px; /* Adjusted to fit the iframe */
+}
+
+.section-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-transform: uppercase; /* Optional, for style */
+    letter-spacing: 2px; /* Optional, adds spacing between letters */
+    border-bottom: 2px solid #ccc; /* Separation line */
+    padding-bottom: 10px;
+}
+
+.quote-box iframe {
+    width: 100%;
+    height: 100%; /* Make the iframe fill the entire quote box */
+    border: none; /* Remove the iframe border */
+    border-radius: 8px; /* Match the rounded corners of the box */
+}
+
+
+
 /* Fade in animation */
 @keyframes fadeIn {
     from {
