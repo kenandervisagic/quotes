@@ -50,7 +50,9 @@ services:
     depends_on:
       - frontend
     networks:
-      - webnet
+      webnet: {}  # No static IP for webnet
+      vpn_custom_network:
+        ipv4_address: 10.13.14.4  # Static IP for vpn_custom_network
     restart: always
 
   certbot:
@@ -74,3 +76,5 @@ volumes:
 
 networks:
   webnet:
+  vpn_custom_network:
+    external: true
