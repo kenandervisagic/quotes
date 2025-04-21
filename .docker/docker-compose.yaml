@@ -32,7 +32,9 @@ services:
     volumes:
       - pg_data:/var/lib/postgreslq/data
     networks:
-      - webnet
+      webnet: {}  # No static IP for webnet
+      vpn_custom_network:
+        ipv4_address: 10.13.14.4  # Static IP for vpn_custom_network
 
 
   nginx-gateway:
@@ -50,9 +52,7 @@ services:
     depends_on:
       - frontend
     networks:
-      webnet: {}  # No static IP for webnet
-      vpn_custom_network:
-        ipv4_address: 10.13.14.4  # Static IP for vpn_custom_network
+      - webnet
     restart: always
 
   certbot:
