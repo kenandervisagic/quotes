@@ -19,6 +19,22 @@ services:
       - SLACK_WEBHOOK=$SLACK_WEBHOOK
     restart: always
 
+  db:
+    image: postgres:16
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER:
+      POSTGRES_DB: quotes
+      POSTGRES_PASSWORD:
+    expose:
+      - 5432
+    volumes:
+      - pg_data:/var/lib/postgreslq/data
+    networks:
+      - webnet
+
+
   nginx-gateway:
     image: nginx:alpine
     container_name: nginx-gateway
@@ -52,6 +68,9 @@ services:
     networks:
       - webnet
     restart: on-failure
+
+volumes:
+  pg_data:
 
 networks:
   webnet:
