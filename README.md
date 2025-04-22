@@ -67,34 +67,37 @@ An application for anonymously sharing messages and quotes with others. Post tho
 
 ```
 anonymous_messages/
-├── .github/               # GitHub configuration
-│   └── workflows/         # CI/CD pipelines
+├── .docker/
+│   ├── docker-compose.yaml
+│   └── docker-tls-setup.sh
+├── .github/
+│   └── workflows/
 │       ├── build-deploy.yaml
 │       └── pr-check.yaml
-├── backend/               # FastAPI application
+├── backend/
+│   ├── .idea/
 │   ├── Dockerfile
 │   ├── local.Dockerfile
 │   ├── requirements.txt
 │   └── slack.py
-├── docker/                # Docker configuration
-│   ├── docker-compose.yaml
-│   ├── docker-tls-setup.sh
-│   └── Dockerfile
-├── node_modules/          # Node dependencies
-├── public/                # Static assets
-├── src/                   # React source code
+├── frontend/
+│   ├── node_modules/
+│   ├── public/
+│   ├── src/
+│   ├── Dockerfile
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── local.Dockerfile
+│   ├── package.json
+│   ├── package-lock.json
+│   └── vite.config.js
 ├── .dockerignore
-├── .env.local             # Local environment variables
+├── .env.local
 ├── .gitignore
 ├── docker-compose-local.yaml
-├── eslint.config.js
-├── index.html             # Main HTML entry point
-├── local.Dockerfile       # Local development Dockerfile
-├── package.json           # Frontend dependencies
-├── package-lock.json
-├── README.md
-└── vite.config.js         # Vite configuration
+└── README.md
 ```
+
 
 ### Branching Strategy
 
