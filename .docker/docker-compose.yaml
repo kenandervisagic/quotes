@@ -16,7 +16,12 @@ services:
     networks:
       - webnet
     environment:
-      - SLACK_WEBHOOK=$SLACK_WEBHOOK
+      SLACK_WEBHOOK: $SLACK_WEBHOOK
+      MINIO_URL: minio.kdidp.art
+      MINIO_ACCESS_KEY: $MINIO_ROOT_USER
+      MINIO_SECRET_KEY: $MINIO_ROOT_PASSWORD
+      MINIO_BUCKET_NAME: images
+      FONT_PATH: ReenieBeanie-Regular.ttf
     restart: always
 
 

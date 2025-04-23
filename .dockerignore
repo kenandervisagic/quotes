@@ -6,4 +6,4 @@ Dockerfile
 README.md
 .github
 docker-compose-local.yaml
-docker-compose.yaml
+docker-compose.yaml!/backend/env/
