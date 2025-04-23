@@ -116,7 +116,7 @@ def upload_image_to_minio(image_io: BytesIO, filename: str) -> str:
     if ENVIRONMENT == "local":
         minio_url = "localhost:9000"  # Local Minio URL
     else:
-        minio_url = MINIO_URL  # Production Minio URL
+        minio_url = "minio.kdidp.art"  # Production Minio URL
 
     # Upload the image to Minio
     minio_client.put_object(
@@ -178,7 +178,7 @@ async def get_images():
         if ENVIRONMENT == "local":
             minio_url = "localhost:9000"  # Local Minio URL
         else:
-            minio_url = MINIO_URL  # Production Minio URL
+            minio_url = "minio.kdidp.art"  # Production Minio URL
         objects = minio_client.list_objects(MINIO_BUCKET_NAME, recursive=True)
         image_urls = [
             f"http://{minio_url}/{MINIO_BUCKET_NAME}/{obj.object_name}"
