@@ -54,6 +54,24 @@ services:
       - webnet
     restart: on-failure
 
+  minio:
+    image: minio/minio
+    container_name: minio
+    expose:
+      - "9000"   # S3 API
+      - "9001"   # MinIO Console
+    environment:
+      MINIO_ROOT_USER: $MINIO_ROOT_USER
+      MINIO_ROOT_PASSWORD: $MINIO_ROOT_PASSWORD
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - webnet
+    restart: always
 
 networks:
   webnet:
+
+volumes:
+  minio_data:

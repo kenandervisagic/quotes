@@ -68,3 +68,5 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           PG_USER: ${{secrets.PG_USER}}
           PG_PASSWORD: ${{secrets.PG_PASSWORD}}
+          MINIO_ROOT_PASSWORD: ${{secrets.MINIO_ROOT_PASSWORD}}
+          MINIO_ROOT_USER: ${{secrets.MINIO_ROOT_USER}}
