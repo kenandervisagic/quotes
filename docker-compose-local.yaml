@@ -33,5 +33,24 @@ services:
       - PYTHONUNBUFFERED=1
     restart: on-failure
 
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9001:9001"
+      - "9000:9000"
+    environment:
+      MINIO_ROOT_USER: muki
+      MINIO_ROOT_PASSWORD: kenomuki
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - webnet
+    restart: always
+
 networks:
   webnet:
+
+volumes:
+  minio_data:
