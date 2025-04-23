@@ -23,7 +23,7 @@ MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY", "muki")
 MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY", "kenomuki")
 MINIO_BUCKET_NAME = os.getenv("MINIO_BUCKET_NAME", "images")
 FONT_PATH = os.getenv("FONT_PATH", "ReenieBeanie-Regular.ttf")  # Ensure font is available
-ENVIRONMENT = os.getenv("ENVIRONMENT", "local")
+ENVIRONMENT = os.getenv("ENVIRONMENT", "")
 
 # Minio client
 minio_client = Minio(
@@ -127,7 +127,10 @@ def upload_image_to_minio(image_io: BytesIO, filename: str) -> str:
         content_type="image/png"
     )
 
-    return f"http://{minio_url}/{MINIO_BUCKET_NAME}/{filename}"
+    if ENVIRONMENT == "local":
+        return f"http://{minio_url}/{MINIO_BUCKET_NAME}/{filename}"
+    else:
+        return f"https://{minio_url}/{MINIO_BUCKET_NAME}/{filename}"  # Return HTTPS URL in production
 
 
 # Health check
@@ -181,7 +184,7 @@ async def get_images():
             minio_url = "minio.kdidp.art"  # Production Minio URL
         objects = minio_client.list_objects(MINIO_BUCKET_NAME, recursive=True)
         image_urls = [
-            f"http://{minio_url}/{MINIO_BUCKET_NAME}/{obj.object_name}"
+            f"https://{minio_url}/{MINIO_BUCKET_NAME}/{obj.object_name}" if ENVIRONMENT != "local" else f"http://{minio_url}/{MINIO_BUCKET_NAME}/{obj.object_name}"
             for obj in objects
         ]
         return JSONResponse(content={"images": image_urls})
