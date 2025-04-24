@@ -6,10 +6,12 @@ function Gallery({ refreshKey }) {
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
     const observerRef = useRef(null);
+    const isFetchingRef = useRef(false); // Track ongoing fetch
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://kdidp.art/api/v1';
 
     const fetchImages = async (startAfter = null) => {
-        if (isLoading) return;
+        if (isFetchingRef.current || isLoading) return; // Prevent concurrent fetches
+        isFetchingRef.current = true;
         setIsLoading(true);
         try {
             const params = new URLSearchParams({ limit: '10' });
@@ -18,7 +20,13 @@ function Gallery({ refreshKey }) {
             }
             const response = await fetch(`${apiBaseUrl}/images?${params.toString()}`);
             const data = await response.json();
-            setImages((prev) => [...prev, ...data.images]);
+
+            // Deduplicate images by filtering out duplicates
+            setImages((prev) => {
+                const newImages = data.images.filter((url) => !prev.includes(url));
+                return [...prev, ...newImages];
+            });
+
             if (data.next_start_after) {
                 setNextStartAfter(data.next_start_after);
             } else {
@@ -28,15 +36,16 @@ function Gallery({ refreshKey }) {
             console.error("Error fetching images:", error);
         } finally {
             setIsLoading(false);
+            isFetchingRef.current = false;
         }
     };
 
     // Fetch initial images or reset on refresh
     useEffect(() => {
-        setImages([]);
+        setImages([]); // Reset images
         setNextStartAfter(null);
         setHasMore(true);
-        fetchImages();
+        fetchImages(); // Fetch initial images
     }, [refreshKey]);
 
     // Set up Intersection Observer for infinite scrolling
@@ -49,12 +58,15 @@ function Gallery({ refreshKey }) {
             },
             { threshold: 1.0 }
         );
-        if (observerRef.current) {
-            observer.observe(observerRef.current);
+
+        const currentObserver = observerRef.current;
+        if (currentObserver) {
+            observer.observe(currentObserver);
         }
+
         return () => {
-            if (observerRef.current) {
-                observer.unobserve(observerRef.current);
+            if (currentObserver) {
+                observer.unobserve(currentObserver);
             }
         };
     }, [nextStartAfter, hasMore, isLoading]);

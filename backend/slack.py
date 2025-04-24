@@ -188,14 +188,12 @@ async def send_message(message: Message):
 async def get_images(limit: int = 10, start_after: str = None):
     try:
         if ENVIRONMENT == "local":
-            minio_url = "localhost:9000"  # Local Minio URL
+            minio_url = "localhost:9000"
         else:
-            minio_url = "minio.kdidp.art"  # Production Minio URL
-        # Fetch objects starting after the specified key (if provided)
+            minio_url = "minio.kdidp.art"
         objects = minio_client.list_objects(MINIO_BUCKET_NAME, recursive=True, start_after=start_after)
         image_urls = []
         last_object_name = None
-        # Limit the number of objects fetched
         for i, obj in enumerate(objects):
             if i >= limit:
                 break
@@ -206,7 +204,6 @@ async def get_images(limit: int = 10, start_after: str = None):
             )
             image_urls.append(url)
             last_object_name = obj.object_name
-        # Return images and the next cursor if we fetched the full limit
         response = {
             "images": image_urls,
             "next_start_after": last_object_name if len(image_urls) == limit else None
