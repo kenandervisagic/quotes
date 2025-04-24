@@ -75,7 +75,9 @@ anonymous_messages/
 │       ├── build-deploy.yaml
 │       └── pr-check.yaml
 ├── backend/
-│   ├── .idea/
+│   └── images/
+│       ├── white/
+│       └── black/
 │   ├── Dockerfile
 │   ├── local.Dockerfile
 │   ├── requirements.txt
