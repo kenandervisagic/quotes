@@ -246,7 +246,11 @@ html, body {
     color: #85614f;
     border: 1px solid rgba(164, 120, 100, 0.3);
 }
-
+.error-message {
+    color: #333;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+}
 /* Submissions counter */
 .submissions-counter {
     margin-bottom: 15px;
@@ -300,6 +304,16 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.download-button {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
 .quote-box img {

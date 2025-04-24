@@ -64,9 +64,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Add text to a random base image
 def add_text_to_random_image(text: str) -> BytesIO:
-    # Choose from 'images/black/' or 'images/white/' folder
     color_folder = random.choice(["black", "white"])
     image_dir = os.path.join("images", color_folder)
     image_files = [f for f in os.listdir(image_dir) if f.lower().endswith((".png", ".jpg", ".jpeg"))]
@@ -79,19 +77,21 @@ def add_text_to_random_image(text: str) -> BytesIO:
 
     # Apply dark overlay to make text more readable
     overlay = Image.new("RGB", image.size, (0, 0, 0))
-    image = Image.blend(image, overlay, alpha=0.3)  # Adjust darkness as needed
+    image = Image.blend(image, overlay, alpha=0.3)
 
     draw = ImageDraw.Draw(image)
 
     try:
         font = ImageFont.truetype(FONT_PATH, size=65)
+        watermark_font = ImageFont.truetype(FONT_PATH, size=30)  # smaller font for watermark
     except IOError:
         font = ImageFont.load_default()
+        watermark_font = font
 
-    # Wrap text to fit image width
-    max_width = image.width - 200  # padding
+    # Wrap text
+    max_width = image.width - 200
     lines = []
-    for line in textwrap.wrap(text, width=20):  # wrap text manually by character count
+    for line in textwrap.wrap(text, width=20):
         while True:
             bbox = draw.textbbox((0, 0), line, font=font)
             if bbox[2] - bbox[0] <= max_width:
@@ -99,12 +99,11 @@ def add_text_to_random_image(text: str) -> BytesIO:
             line = line[:-1]
         lines.append(line)
 
-    # Calculate total height of all lines
+    # Centered vertical layout
     line_height = font.getbbox("A")[3] - font.getbbox("A")[1]
     total_height = line_height * len(lines)
     y_text = (image.height - total_height) // 2
 
-    # Determine text color from folder name
     text_color = "white" if color_folder == "white" else "black"
 
     for line in lines:
@@ -113,8 +112,26 @@ def add_text_to_random_image(text: str) -> BytesIO:
         draw.text((x_text, y_text), line, font=font, fill=text_color)
         y_text += line_height
 
+    # Add watermark at bottom center
+    watermark_text = "@the_words_left_behind"
+    watermark_color = (0, 0, 0, 230) if color_folder == "black" else (255, 255, 255, 230)
+
+    # Create transparent layer for watermark
+    watermark_layer = Image.new("RGBA", image.size, (0, 0, 0, 0))
+    watermark_draw = ImageDraw.Draw(watermark_layer)
+
+    watermark_width = watermark_draw.textlength(watermark_text, font=watermark_font)
+    x_watermark = (image.width - watermark_width) // 2
+    y_watermark = image.height - 100  # margin from bottom
+
+    watermark_draw.text((x_watermark, y_watermark), watermark_text, font=watermark_font, fill=watermark_color)
+
+    # Merge watermark layer
+    image = image.convert("RGBA")
+    image = Image.alpha_composite(image, watermark_layer)
+
     img_io = BytesIO()
-    image.save(img_io, 'PNG')
+    image.convert("RGB").save(img_io, 'PNG')  # save final image without alpha
     img_io.seek(0)
     return img_io
 
