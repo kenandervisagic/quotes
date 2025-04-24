@@ -1,6 +1,8 @@
 import React from 'react';
 
 function SubmissionSuccess({ userImageUrl, isRateLimited, countdown, onSubmitAnother }) {
+    console.log(isRateLimited)
+    console.log(countdown)
     return (
         <div className="thank-you-message">
             <h3>Thank you for your message!</h3>
