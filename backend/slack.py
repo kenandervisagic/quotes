@@ -184,20 +184,34 @@ async def send_message(message: Message):
         logger.error(f"Error generating image: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to generate image: {str(e)}")
 
-# Get all image URLs from Minio
 @api_router.get("/images")
-async def get_images():
+async def get_images(limit: int = 10, start_after: str = None):
     try:
         if ENVIRONMENT == "local":
             minio_url = "localhost:9000"  # Local Minio URL
         else:
             minio_url = "minio.kdidp.art"  # Production Minio URL
-        objects = minio_client.list_objects(MINIO_BUCKET_NAME, recursive=True)
-        image_urls = [
-            f"https://{minio_url}/{MINIO_BUCKET_NAME}/{obj.object_name}" if ENVIRONMENT != "local" else f"http://{minio_url}/{MINIO_BUCKET_NAME}/{obj.object_name}"
-            for obj in objects
-        ]
-        return JSONResponse(content={"images": image_urls})
+        # Fetch objects starting after the specified key (if provided)
+        objects = minio_client.list_objects(MINIO_BUCKET_NAME, recursive=True, start_after=start_after)
+        image_urls = []
+        last_object_name = None
+        # Limit the number of objects fetched
+        for i, obj in enumerate(objects):
+            if i >= limit:
+                break
+            url = (
+                f"https://{minio_url}/{MINIO_BUCKET_NAME}/{obj.object_name}"
+                if ENVIRONMENT != "local"
+                else f"http://{minio_url}/{MINIO_BUCKET_NAME}/{obj.object_name}"
+            )
+            image_urls.append(url)
+            last_object_name = obj.object_name
+        # Return images and the next cursor if we fetched the full limit
+        response = {
+            "images": image_urls,
+            "next_start_after": last_object_name if len(image_urls) == limit else None
+        }
+        return JSONResponse(content=response)
     except Exception as e:
         logger.error(f"Error listing images: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to list images: {str(e)}")
