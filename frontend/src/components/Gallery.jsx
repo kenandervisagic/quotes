@@ -14,7 +14,7 @@ function Gallery({ refreshKey }) {
         isFetchingRef.current = true;
         setIsLoading(true);
         try {
-            const params = new URLSearchParams({ limit: '10' });
+            const params = new URLSearchParams({ limit: '5' });
             if (startAfter) {
                 params.append('start_after', startAfter);
             }
