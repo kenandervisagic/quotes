@@ -66,12 +66,21 @@ app.add_middleware(
 
 # Add text to a random base image
 def add_text_to_random_image(text: str) -> BytesIO:
-    image_files = [f for f in os.listdir("images") if f.lower().endswith((".png", ".jpg", ".jpeg"))]
-    if not image_files:
-        raise FileNotFoundError("No images found in 'images/' folder.")
+    # Choose from 'images/black/' or 'images/white/' folder
+    color_folder = random.choice(["black", "white"])
+    image_dir = os.path.join("images", color_folder)
+    image_files = [f for f in os.listdir(image_dir) if f.lower().endswith((".png", ".jpg", ".jpeg"))]
 
-    chosen_image_path = os.path.join("images", random.choice(image_files))
+    if not image_files:
+        raise FileNotFoundError(f"No images found in '{image_dir}'.")
+
+    chosen_image_path = os.path.join(image_dir, random.choice(image_files))
     image = Image.open(chosen_image_path).convert("RGB")
+
+    # Apply dark overlay to make text more readable
+    overlay = Image.new("RGB", image.size, (0, 0, 0))
+    image = Image.blend(image, overlay, alpha=0.3)  # Adjust darkness as needed
+
     draw = ImageDraw.Draw(image)
 
     try:
@@ -87,20 +96,21 @@ def add_text_to_random_image(text: str) -> BytesIO:
             bbox = draw.textbbox((0, 0), line, font=font)
             if bbox[2] - bbox[0] <= max_width:
                 break
-            # Reduce line length if it's still too wide
             line = line[:-1]
         lines.append(line)
 
-    # Calculate total height
+    # Calculate total height of all lines
     line_height = font.getbbox("A")[3] - font.getbbox("A")[1]
     total_height = line_height * len(lines)
-
     y_text = (image.height - total_height) // 2
+
+    # Determine text color from folder name
+    text_color = "white" if color_folder == "white" else "black"
 
     for line in lines:
         line_width = draw.textlength(line, font=font)
         x_text = (image.width - line_width) // 2
-        draw.text((x_text, y_text), line, font=font, fill="black")
+        draw.text((x_text, y_text), line, font=font, fill=text_color)
         y_text += line_height
 
     img_io = BytesIO()

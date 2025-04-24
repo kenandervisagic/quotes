@@ -1,9 +1,11 @@
+import React from 'react';
+
 function Header() {
     return (
-        <div className="Header">
-            <p>the words left behind</p>
-        </div>
-    )
+        <header className="header">
+            <h1>the words left behind</h1>
+        </header>
+    );
 }
 
 export default Header;
