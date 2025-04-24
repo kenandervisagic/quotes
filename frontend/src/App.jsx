@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import Header from './components/Header';
 import MessageForm from './components/MessageForm';
 import SubmissionSuccess from './components/SubmissionSuccess';
 import Gallery from './components/Gallery';
 import Footer from './components/Footer';
-import { checkRateLimit, updateSubmissionHistory } from './utils/rateLimiting';
+import {checkRateLimit, updateSubmissionHistory} from './utils/rateLimiting';
 import './App.css';
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://kdidp.art/api/v1';
@@ -46,12 +46,12 @@ function App() {
         setIsLoading(true);
         setError(null);
 
-        const payload = { content: message };
+        const payload = {content: message};
 
         try {
             const response = await fetch(`${apiBaseUrl}/submit-message`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload),
             });
             const data = await response.json();
@@ -59,8 +59,13 @@ function App() {
             if (response.ok) {
                 setUserImageUrl(data.image_url);
                 setSubmitted(true);
-                updateSubmissionHistory();
-                setRefreshKey((prev) => prev + 1); // Trigger gallery refresh
+
+                // 1) update the LS history, AND 2) get the new rate‐limit status:
+                const rateStatus = updateSubmissionHistory();
+                setIsRateLimited(rateStatus.isLimited);
+                setCountdown(rateStatus.remainingCooldown);
+
+                setRefreshKey((prev) => prev + 1);
             } else {
                 setError(data.error || "Failed to submit message.");
             }
@@ -86,13 +91,13 @@ function App() {
 
     return (
         <div className="app-container">
-            <Header />
+            <Header/>
             <main className="main-content">
                 <div className="paper-card">
                     <h2 className="page-title">Submit an Anonymous Message</h2>
                     <p className="explanation">
                         This page is a safe space to share things you've never said out loud.
-                        <br />
+                        <br/>
                         Your message will remain anonymous.
                     </p>
 
@@ -113,10 +118,10 @@ function App() {
                         />
                     )}
 
-                    <Footer />
+                    <Footer/>
                 </div>
 
-                <Gallery refreshKey={refreshKey} />
+                <Gallery refreshKey={refreshKey}/>
             </main>
         </div>
     );
