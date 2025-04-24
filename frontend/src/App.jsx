@@ -15,17 +15,16 @@ function App() {
     const [isRateLimited, setIsRateLimited] = useState(false);
     const [countdown, setCountdown] = useState(0);
     const [userImageUrl, setUserImageUrl] = useState(null);
-    const [images, setImages] = useState([]);
     const [error, setError] = useState(null);
+    const [refreshKey, setRefreshKey] = useState(0);
 
-    // Check rate limit and fetch images on mount
+    // Check rate limit on mount
     useEffect(() => {
         const rateStatus = checkRateLimit();
         setIsRateLimited(rateStatus.isLimited);
         if (rateStatus.isLimited) {
             setCountdown(rateStatus.remainingCooldown);
         }
-        fetchImages();
     }, []);
 
     // Countdown timer for cooldown period
@@ -42,16 +41,6 @@ function App() {
             if (timer) clearTimeout(timer);
         };
     }, [countdown, isRateLimited]);
-
-    const fetchImages = async () => {
-        try {
-            const response = await fetch(`${apiBaseUrl}/images`);
-            const data = await response.json();
-            setImages(data.images || []);
-        } catch (error) {
-            console.error("Error fetching images:", error);
-        }
-    };
 
     const handleSubmit = async (message) => {
         setIsLoading(true);
@@ -71,7 +60,7 @@ function App() {
                 setUserImageUrl(data.image_url);
                 setSubmitted(true);
                 updateSubmissionHistory();
-                fetchImages(); // Refresh gallery
+                setRefreshKey((prev) => prev + 1); // Trigger gallery refresh
             } else {
                 setError(data.error || "Failed to submit message.");
             }
@@ -127,7 +116,7 @@ function App() {
                     <Footer />
                 </div>
 
-                <Gallery images={images} />
+                <Gallery refreshKey={refreshKey} />
             </main>
         </div>
     );
