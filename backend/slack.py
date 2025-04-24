@@ -137,7 +137,6 @@ def add_text_to_random_image(text: str) -> BytesIO:
 
 
 # Upload image to Minio
-# Upload image to Minio
 def upload_image_to_minio(image_io: BytesIO, filename: str) -> str:
     # Adjust the Minio URL based on the environment when returning the image URL
     if ENVIRONMENT == "local":
