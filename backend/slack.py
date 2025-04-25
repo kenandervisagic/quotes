@@ -65,7 +65,8 @@ app.add_middleware(
 )
 
 def add_text_to_random_image(text: str) -> BytesIO:
-    color_folder = random.choice(["black", "white"])
+    #color_folder = random.choice(["black", "white"]) no images in black folder
+    color_folder = "white"
     image_dir = os.path.join("images", color_folder)
     image_files = [f for f in os.listdir(image_dir) if f.lower().endswith((".png", ".jpg", ".jpeg"))]
 
