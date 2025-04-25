@@ -246,7 +246,50 @@ async def get_images(limit: int = 10, start_after: str = None):
         raise HTTPException(status_code=500, detail=f"Failed to fetch image URLs: {str(e)}")
 
 
+# Endpoint to like or unlike a post
+@api_router.post("/like")
+async def like_post(submission_id: str, like_action: str):
+    try:
+        # Validate like_action
+        if like_action not in ["increase", "decrease"]:
+            raise HTTPException(status_code=400, detail="Invalid like action. Must be 'increase' or 'decrease'.")
 
+        # Convert the submission_id to an ObjectId
+        try:
+            obj_id = ObjectId(submission_id)
+        except Exception as e:
+            raise HTTPException(status_code=400, detail="Invalid submission_id format.")
+
+        # Query the database to find the submission
+        submission = submissions_collection.find_one({"_id": obj_id})
+
+        if not submission:
+            raise HTTPException(status_code=404, detail="Submission not found.")
+
+        # Get current like count or default to 0 if not present
+        current_likes = submission.get('likes', 0)
+
+        # Modify the likes count
+        if like_action == "increase":
+            new_likes = current_likes + 1
+        elif like_action == "decrease" and current_likes > 0:
+            new_likes = current_likes - 1
+        else:
+            # Prevent likes from going below zero
+            new_likes = current_likes
+
+        # Update the likes count in the database
+        submissions_collection.update_one(
+            {"_id": obj_id},
+            {"$set": {"likes": new_likes}}
+        )
+
+        # Return the updated like count
+        return JSONResponse(content={"status": "success", "likes": new_likes})
+
+    except Exception as e:
+        logger.error(f"Error updating likes: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to update likes: {str(e)}")
 
 
 app.include_router(api_router, prefix="/api/v1")

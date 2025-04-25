@@ -80,6 +80,7 @@ function Gallery({ refreshKey }) {
             <div className="quotes-boxes">
                 {images.map((imageData) => (
                     <PostCard
+                        submission_id={imageData.submission_id}
                         key={imageData.image_url}
                         imageUrl={imageData.image_url}
                         timestamp={imageData.timestamp}

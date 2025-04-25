@@ -11,7 +11,6 @@ backend/__pycache__/
 node_modules
 dist
 dist-ssr
-nginx/
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
