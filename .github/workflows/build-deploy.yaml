@@ -70,3 +70,6 @@ jobs:
           PG_PASSWORD: ${{secrets.PG_PASSWORD}}
           MINIO_ROOT_PASSWORD: ${{secrets.MINIO_ROOT_PASSWORD}}
           MINIO_ROOT_USER: ${{secrets.MINIO_ROOT_USER}}
+          MONGO_DB: ${{secrets.MONGO_INITDB_DATABASE}}
+          MONGO_USER: ${{secrets.MONGO_INITDB_ROOT_USERNAME}}
+          MONGO_PASSWORD: ${{secrets.MONGO_INITDB_ROOT_PASSWORD}}

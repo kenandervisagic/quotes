@@ -104,3 +104,25 @@
 .download-button:hover, .like-button:hover, .share-button:hover {
     transform: scale(1.1);
 }
+.copied-feedback {
+    position: absolute;
+    top: -25px;
+    left: 70%;
+    transform: translateX(-50%);
+    background-color: #85614f;
+    color: white;
+    padding: 5px 10px;
+    font-size: 10px;
+    border-radius: 4px;
+    opacity: 0;
+    animation: fadeIn 1.5s forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
