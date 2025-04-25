@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
+import PostCard from "./PostCard/PostCard.jsx";
 
-function Gallery({ refreshKey }) {
+function Gallery({refreshKey}) {
     const [images, setImages] = useState([]);
     const [nextStartAfter, setNextStartAfter] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -14,7 +15,7 @@ function Gallery({ refreshKey }) {
         isFetchingRef.current = true;
         setIsLoading(true);
         try {
-            const params = new URLSearchParams({ limit: '5' });
+            const params = new URLSearchParams({limit: '5'});
             if (startAfter) {
                 params.append('start_after', startAfter);
             }
@@ -56,7 +57,7 @@ function Gallery({ refreshKey }) {
                     fetchImages(nextStartAfter);
                 }
             },
-            { threshold: 1.0 }
+            {threshold: 1.0}
         );
 
         const currentObserver = observerRef.current;
@@ -76,14 +77,12 @@ function Gallery({ refreshKey }) {
             <h2 className="section-title">Recent Submissions</h2>
             <div className="quotes-boxes">
                 {images.map((imageUrl) => (
-                    <div key={imageUrl} className="quote-box">
-                        <img src={imageUrl} alt="Submission" className="quote-image" />
-                    </div>
+                    <PostCard key={imageUrl} imageUrl={imageUrl}/>
                 ))}
                 {hasMore && (
                     <div
                         ref={observerRef}
-                        style={{ height: '20px', background: 'transparent' }}
+                        style={{height: '20px', background: 'transparent'}}
                     ></div>
                 )}
                 {isLoading && <p>Loading more images...</p>}
