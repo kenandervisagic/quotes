@@ -2,6 +2,8 @@ import os
 import random
 import textwrap
 import uuid
+
+from bson import ObjectId
 from fastapi import FastAPI, APIRouter, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,6 +13,8 @@ import logging
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 from minio import Minio
+
+from mongo import save_submission, submissions_collection
 
 app = FastAPI()
 logger = logging.getLogger("uvicorn")
@@ -22,7 +26,7 @@ MINIO_URL = os.getenv("MINIO_URL", "minio:9000")
 MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY", "muki")
 MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY", "kenomuki")
 MINIO_BUCKET_NAME = os.getenv("MINIO_BUCKET_NAME", "images")
-FONT_PATH = os.getenv("FONT_PATH", "ReenieBeanie-Regular.ttf")  # Ensure font is available
+FONT_PATH = os.getenv("FONT_PATH", "ReenieBeanie-Regular.ttf")
 ENVIRONMENT = os.getenv("ENVIRONMENT", "")
 
 # Minio client
@@ -33,7 +37,6 @@ minio_client = Minio(
     secure=(ENVIRONMENT != "local"),
 )
 
-# Models
 class Message(BaseModel):
     content: str
 
@@ -50,7 +53,6 @@ class Message(BaseModel):
             raise ValueError("Quote must be 500 characters or less.")
         return v
 
-# CORS settings
 if ENVIRONMENT == "local":
     origins = ["*"]
 else:
@@ -65,7 +67,7 @@ app.add_middleware(
 )
 
 def add_text_to_random_image(text: str) -> BytesIO:
-    #color_folder = random.choice(["black", "white"]) no images in black folder
+    # color_folder = random.choice(["black", "white"]) no images in black folder
     color_folder = "white"
     image_dir = os.path.join("images", color_folder)
     image_files = [f for f in os.listdir(image_dir) if f.lower().endswith((".png", ".jpg", ".jpeg"))]
@@ -165,9 +167,10 @@ def upload_image_to_minio(image_io: BytesIO, filename: str) -> str:
 async def health():
     return {"status": "ok"}
 
+
 # Submit message and generate image
 @api_router.post("/submit-message")
-async def send_message(message: Message):
+async def submit_post(message: Message):
     if not SLACK_WEBHOOK_URL:
         logger.error("Slack webhook URL is not set in the environment.")
         raise HTTPException(status_code=500, detail="Slack webhook URL not set in environment")
@@ -184,7 +187,8 @@ async def send_message(message: Message):
         response = requests.post(SLACK_WEBHOOK_URL, json=slack_payload)
         if response.status_code != 200:
             logger.error(f"Failed to send message to Slack: {response.text}")
-            return JSONResponse(content={"status": "Failed to send message to Slack", "error": response.text}, status_code=500)
+            return JSONResponse(content={"status": "Failed to send message to Slack", "error": response.text},
+                                status_code=500)
 
         # Generate and upload image
         unique_id = uuid.uuid4()
@@ -192,7 +196,9 @@ async def send_message(message: Message):
         img_io = add_text_to_random_image(message.content)
         image_url = upload_image_to_minio(img_io, filename)
 
-        return JSONResponse(content={"status": "success", "image_url": image_url})
+        # Save submission to MongoDB
+        submission_id = save_submission(image_url)
+        return JSONResponse(content={"status": "success", "image_url": image_url, "submission_id": str(submission_id)})
 
     except requests.exceptions.RequestException as e:
         logger.error(f"Error while sending message to Slack: {str(e)}")
@@ -201,33 +207,89 @@ async def send_message(message: Message):
         logger.error(f"Error generating image: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to generate image: {str(e)}")
 
+
 @api_router.get("/images")
 async def get_images(limit: int = 10, start_after: str = None):
     try:
-        if ENVIRONMENT == "local":
-            minio_url = "localhost:9000"
-        else:
-            minio_url = "minio.kdidp.art"
-        objects = minio_client.list_objects(MINIO_BUCKET_NAME, recursive=True, start_after=start_after)
-        image_urls = []
-        last_object_name = None
-        for i, obj in enumerate(objects):
-            if i >= limit:
-                break
-            url = (
-                f"https://{minio_url}/{MINIO_BUCKET_NAME}/{obj.object_name}"
-                if ENVIRONMENT != "local"
-                else f"http://{minio_url}/{MINIO_BUCKET_NAME}/{obj.object_name}"
-            )
-            image_urls.append(url)
-            last_object_name = obj.object_name
+        # Prepare the query filter
+        query_filter = {}
+
+        if start_after:
+            # Use start_after to fetch results after a specific submission_id
+            query_filter['_id'] = {'$gt': ObjectId(start_after)}
+
+        # Query MongoDB for images with pagination
+        cursor = submissions_collection.find(query_filter).sort("_id", 1).limit(limit)
+
+        # Collect image data
+        images_data = []
+        last_submission_id = None
+        for submission in cursor:
+            image_data = {
+                "image_url": submission['image_url'],
+                "timestamp": submission['timestamp'].isoformat(),  # Return the timestamp (date)
+                "likes": submission.get('likes', 0),  # Return the number of likes (default to 0 if not available)
+                "submission_id": str(submission['_id'])  # Add the submission_id (MongoDB _id)
+            }
+            images_data.append(image_data)
+            last_submission_id = str(submission['_id'])
+
         response = {
-            "images": image_urls,
-            "next_start_after": last_object_name if len(image_urls) == limit else None
+            "images": images_data,
+            "next_start_after": last_submission_id if len(images_data) == limit else None
         }
+
         return JSONResponse(content=response)
+
     except Exception as e:
-        logger.error(f"Error listing images: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Failed to list images: {str(e)}")
+        logger.error(f"Error fetching image URLs from MongoDB: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to fetch image URLs: {str(e)}")
+
+
+# Endpoint to like or unlike a post
+@api_router.post("/like")
+async def like_post(submission_id: str, like_action: str):
+    try:
+        # Validate like_action
+        if like_action not in ["increase", "decrease"]:
+            raise HTTPException(status_code=400, detail="Invalid like action. Must be 'increase' or 'decrease'.")
+
+        # Convert the submission_id to an ObjectId
+        try:
+            obj_id = ObjectId(submission_id)
+        except Exception as e:
+            raise HTTPException(status_code=400, detail="Invalid submission_id format.")
+
+        # Query the database to find the submission
+        submission = submissions_collection.find_one({"_id": obj_id})
+
+        if not submission:
+            raise HTTPException(status_code=404, detail="Submission not found.")
+
+        # Get current like count or default to 0 if not present
+        current_likes = submission.get('likes', 0)
+
+        # Modify the likes count
+        if like_action == "increase":
+            new_likes = current_likes + 1
+        elif like_action == "decrease" and current_likes > 0:
+            new_likes = current_likes - 1
+        else:
+            # Prevent likes from going below zero
+            new_likes = current_likes
+
+        # Update the likes count in the database
+        submissions_collection.update_one(
+            {"_id": obj_id},
+            {"$set": {"likes": new_likes}}
+        )
+
+        # Return the updated like count
+        return JSONResponse(content={"status": "success", "likes": new_likes})
+
+    except Exception as e:
+        logger.error(f"Error updating likes: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to update likes: {str(e)}")
+
 
 app.include_router(api_router, prefix="/api/v1")

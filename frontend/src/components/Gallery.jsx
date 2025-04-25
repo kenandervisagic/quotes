@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PostCard from "./PostCard/PostCard.jsx";
 
 function Gallery({ refreshKey }) {
     const [images, setImages] = useState([]);
@@ -16,21 +17,21 @@ function Gallery({ refreshKey }) {
         try {
             const params = new URLSearchParams({ limit: '5' });
             if (startAfter) {
-                params.append('start_after', startAfter);
+                params.append('start_after', startAfter);  // Add the submission_id to start after this image
             }
             const response = await fetch(`${apiBaseUrl}/images?${params.toString()}`);
             const data = await response.json();
 
             // Deduplicate images by filtering out duplicates
             setImages((prev) => {
-                const newImages = data.images.filter((url) => !prev.includes(url));
+                const newImages = data.images.filter((image) => !prev.some((prevImage) => prevImage.submission_id === image.submission_id));
                 return [...prev, ...newImages];
             });
 
             if (data.next_start_after) {
-                setNextStartAfter(data.next_start_after);
+                setNextStartAfter(data.next_start_after);  // Set the next start after for pagination
             } else {
-                setHasMore(false);
+                setHasMore(false);  // No more images to load
             }
         } catch (error) {
             console.error("Error fetching images:", error);
@@ -39,6 +40,8 @@ function Gallery({ refreshKey }) {
             isFetchingRef.current = false;
         }
     };
+
+
 
     // Fetch initial images or reset on refresh
     useEffect(() => {
@@ -75,10 +78,14 @@ function Gallery({ refreshKey }) {
         <div className="quotes-container">
             <h2 className="section-title">Recent Submissions</h2>
             <div className="quotes-boxes">
-                {images.map((imageUrl) => (
-                    <div key={imageUrl} className="quote-box">
-                        <img src={imageUrl} alt="Submission" className="quote-image" />
-                    </div>
+                {images.map((imageData) => (
+                    <PostCard
+                        submission_id={imageData.submission_id}
+                        key={imageData.image_url}
+                        imageUrl={imageData.image_url}
+                        timestamp={imageData.timestamp}
+                        likes={imageData.likes}
+                    />
                 ))}
                 {hasMore && (
                     <div
