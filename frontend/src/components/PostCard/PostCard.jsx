@@ -1,18 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import './PostCard.css';
-import {formatDate} from "../../utils/dateFormat.js";
+import { formatDate } from "../../utils/dateFormat.js";
 
-function PostCard({ imageUrl, likes, timestamp}) {
+function PostCard({ imageUrl, likes, timestamp, submission_id }) {
     const [liked, setLiked] = useState(false);
+    const [currentLikes, setCurrentLikes] = useState(likes);
     const [animateLike, setAnimateLike] = useState(false);
     const [animateShare, setAnimateShare] = useState(false);
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://kdidp.art/api/v1';
 
     useEffect(() => {
         const stored = localStorage.getItem(`liked_${imageUrl}`);
         setLiked(stored === 'true');
     }, [imageUrl]);
 
-    const toggleLike = () => {
+    const toggleLike = async () => {
         const newLiked = !liked;
         setLiked(newLiked);
         localStorage.setItem(`liked_${imageUrl}`, newLiked);
@@ -20,6 +22,28 @@ function PostCard({ imageUrl, likes, timestamp}) {
         if (newLiked) {
             setAnimateLike(true);
             setTimeout(() => setAnimateLike(false), 300);
+        }
+
+        // Call API to update like count in the backend
+        try {
+            const likeAction = newLiked ? 'increase' : 'decrease';
+
+            // Update the API call to use query parameters
+            const response = await fetch(`${apiBaseUrl}/like?submission_id=${submission_id}&like_action=${likeAction}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update likes');
+            }
+
+            const result = await response.json();
+            setCurrentLikes(result.likes); // Update the like count with the response from the backend
+        } catch (error) {
+            console.error("Error updating likes:", error);
         }
     };
 
@@ -65,7 +89,7 @@ function PostCard({ imageUrl, likes, timestamp}) {
                                 strokeWidth="2"
                             />
                         </svg>
-                        <span className="like-count">{likes}</span>
+                        <span className="like-count">{currentLikes}</span>
                     </button>
 
                     <button
