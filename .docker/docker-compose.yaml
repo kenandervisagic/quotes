@@ -5,7 +5,7 @@ services:
     expose:
       - 80
     networks:
-      - webnet
+      - quotes_webnet
     restart: always
 
   backend:
@@ -14,7 +14,7 @@ services:
     expose:
       - 8000
     networks:
-      - webnet
+      - quotes_webnet
     environment:
       SLACK_WEBHOOK: $SLACK_WEBHOOK
       MINIO_URL: minio.kdidp.art
@@ -25,7 +25,7 @@ services:
     restart: always
 
 networks:
-  webnet:
+  quotes_webnet:
     external: true
   vpn_custom_network:
     external: true
