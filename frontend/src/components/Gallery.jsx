@@ -1,7 +1,7 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PostCard from "./PostCard/PostCard.jsx";
 
-function Gallery({refreshKey}) {
+function Gallery({ refreshKey }) {
     const [images, setImages] = useState([]);
     const [nextStartAfter, setNextStartAfter] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -15,23 +15,23 @@ function Gallery({refreshKey}) {
         isFetchingRef.current = true;
         setIsLoading(true);
         try {
-            const params = new URLSearchParams({limit: '5'});
+            const params = new URLSearchParams({ limit: '5' });
             if (startAfter) {
-                params.append('start_after', startAfter);
+                params.append('start_after', startAfter);  // Add the submission_id to start after this image
             }
             const response = await fetch(`${apiBaseUrl}/images?${params.toString()}`);
             const data = await response.json();
 
             // Deduplicate images by filtering out duplicates
             setImages((prev) => {
-                const newImages = data.images.filter((url) => !prev.includes(url));
+                const newImages = data.images.filter((image) => !prev.some((prevImage) => prevImage.submission_id === image.submission_id));
                 return [...prev, ...newImages];
             });
 
             if (data.next_start_after) {
-                setNextStartAfter(data.next_start_after);
+                setNextStartAfter(data.next_start_after);  // Set the next start after for pagination
             } else {
-                setHasMore(false);
+                setHasMore(false);  // No more images to load
             }
         } catch (error) {
             console.error("Error fetching images:", error);
@@ -40,6 +40,8 @@ function Gallery({refreshKey}) {
             isFetchingRef.current = false;
         }
     };
+
+
 
     // Fetch initial images or reset on refresh
     useEffect(() => {
@@ -57,7 +59,7 @@ function Gallery({refreshKey}) {
                     fetchImages(nextStartAfter);
                 }
             },
-            {threshold: 1.0}
+            { threshold: 1.0 }
         );
 
         const currentObserver = observerRef.current;
@@ -76,13 +78,18 @@ function Gallery({refreshKey}) {
         <div className="quotes-container">
             <h2 className="section-title">Recent Submissions</h2>
             <div className="quotes-boxes">
-                {images.map((imageUrl) => (
-                    <PostCard key={imageUrl} imageUrl={imageUrl}/>
+                {images.map((imageData) => (
+                    <PostCard
+                        key={imageData.image_url}
+                        imageUrl={imageData.image_url}
+                        timestamp={imageData.timestamp}
+                        likes={imageData.likes}
+                    />
                 ))}
                 {hasMore && (
                     <div
                         ref={observerRef}
-                        style={{height: '20px', background: 'transparent'}}
+                        style={{ height: '20px', background: 'transparent' }}
                     ></div>
                 )}
                 {isLoading && <p>Loading more images...</p>}

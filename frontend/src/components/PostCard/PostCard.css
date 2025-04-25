@@ -18,13 +18,6 @@
     max-height: 600px;
 }
 
-.post-actions {
-    display: flex;
-    justify-content: flex-start; /* Align buttons to the left */
-    align-items: center;
-    padding: 9px 14px;
-    gap: 14px; /* Added gap between buttons */
-}
 
 .like-button {
     background: none;
@@ -86,4 +79,28 @@
 .post-date {
     font-size: 11px;
     color: #8888;
+}
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 9px 14px;
+}
+
+.post-actions-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.download-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 0.2s ease;
+}
+
+.download-button:hover, .like-button:hover, .share-button:hover {
+    transform: scale(1.1);
 }

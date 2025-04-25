@@ -306,15 +306,6 @@ html, body {
     align-items: center;
 }
 
-.download-button {
-    margin-top: 0.5rem;
-    padding: 0.5rem 1rem;
-    background-color: #444;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
 
 .quote-box img {
     height: 100%;
