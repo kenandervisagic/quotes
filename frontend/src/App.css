@@ -186,41 +186,6 @@ html, body {
     margin-bottom: 1rem;
 }
 
-/* Decorative elements */
-.decorative-circle {
-    position: fixed;
-    border-radius: 50%;
-    z-index: 0;
-}
-
-.circle-1 {
-    width: 250px;
-    height: 250px;
-    bottom: -100px;
-    right: -100px;
-    background-color: #e5cbba;
-    opacity: 0.2;
-}
-
-.circle-2 {
-    width: 200px;
-    height: 200px;
-    top: -80px;
-    left: -80px;
-    background-color: #c8ac96;
-    opacity: 0.1;
-}
-
-/* Romantic Paintings Styling */
-.painting {
-    position: fixed;
-    background-size: cover;
-    background-repeat: no-repeat;
-    border-radius: 5px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
-    opacity: 0.5;
-    z-index: 1;
-}
 
 .message-textarea:disabled {
     background-color: rgba(229, 222, 207, 0.5);
@@ -272,16 +237,7 @@ html, body {
     text-align: center;
 }
 
-.section-title {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    border-bottom: 2px solid #ccc;
-    padding-bottom: 10px;
-}
+
 
 .user-image {
     height: 400px;

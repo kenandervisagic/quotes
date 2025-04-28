@@ -2,10 +2,10 @@ import React, {useState, useEffect} from 'react';
 import Header from './components/Header';
 import MessageForm from './components/MessageForm';
 import SubmissionSuccess from './components/SubmissionSuccess';
-import Gallery from './components/Gallery';
 import Footer from './components/Footer';
 import {checkRateLimit, updateSubmissionHistory} from './utils/rateLimiting';
 import './App.css';
+import Gallery from "./components/Gallery/Gallery.jsx";
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://kdidp.art/api/v1';
 
