@@ -1,7 +1,6 @@
 import logging
 import os
 import random
-import textwrap
 import uuid
 from io import BytesIO
 
@@ -17,6 +16,7 @@ from pymongo import DESCENDING
 
 from mongo import save_submission, submissions_collection
 from utils.validate_message import is_message_valid
+from utils.wrap_text import adjust_text_for_image
 
 app = FastAPI()
 logger = logging.getLogger("uvicorn")
@@ -94,16 +94,7 @@ def add_text_to_random_image(text: str) -> BytesIO:
         font = ImageFont.load_default()
         watermark_font = font
 
-    # Wrap text
-    max_width = image.width - 200
-    lines = []
-    for line in textwrap.wrap(text, width=20):
-        while True:
-            bbox = draw.textbbox((0, 0), line, font=font)
-            if bbox[2] - bbox[0] <= max_width:
-                break
-            line = line[:-1]
-        lines.append(line)
+    lines = adjust_text_for_image(text, max_width=20, font=font, draw=draw)
 
     # Centered vertical layout
     line_height = font.getbbox("A")[3] - font.getbbox("A")[1]
