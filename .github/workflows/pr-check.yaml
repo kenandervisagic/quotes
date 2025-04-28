@@ -22,12 +22,13 @@ jobs:
 
       - name: Install dependencies and run lint
         run: |
+          cd $GITHUB_WORKSPACE/frontend/
           npm ci
           npm run lint
 
       - name: Build Docker Images (no push)
         run: |
-          cp .docker/* .
+          cd $GITHUB_WORKSPACE/frontend/
           docker build -t temp/frontend:pr .
-          cd backend/
+          cd $GITHUB_WORKSPACE/frontend/
           docker build -t temp/backend:pr .
