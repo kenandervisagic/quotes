@@ -1,0 +1,66 @@
+.quotes-header {
+    position: relative;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
+}
+
+.sort-wrapper {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.sort-button {
+    background: transparent;
+    border: 1px solid #6666;
+    padding: 6px 10px;
+    border-radius: 9999px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #85614f;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+
+.filter-icon {
+    width: 14px;
+    height: 14px;
+    color: #666;
+}
+
+.sort-menu {
+    position: absolute;
+text-align: start;
+    right: 0;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    overflow: hidden;
+    z-index: 20;
+    min-width: 100px;
+}
+
+.sort-option {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.sort-option:hover {
+    background-color: #f0f0f0;
+}
