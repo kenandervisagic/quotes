@@ -68,31 +68,9 @@ An application for anonymously sharing messages and quotes with others. Post tho
 ```
 anonymous_messages/
 ├── .docker/
-│   ├── docker-compose.yaml
-│   └── docker-tls-setup.sh
 ├── .github/
-│   └── workflows/
-│       ├── build-deploy.yaml
-│       └── pr-check.yaml
 ├── backend/
-│   └── images/
-│       ├── white/
-│       └── black/
-│   ├── Dockerfile
-│   ├── local.Dockerfile
-│   ├── requirements.txt
-│   └── slack.py
 ├── frontend/
-│   ├── node_modules/
-│   ├── public/
-│   ├── src/
-│   ├── Dockerfile
-│   ├── eslint.config.js
-│   ├── index.html
-│   ├── local.Dockerfile
-│   ├── package.json
-│   ├── package-lock.json
-│   └── vite.config.js
 ├── .dockerignore
 ├── .env.local
 ├── .gitignore
