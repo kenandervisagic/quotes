@@ -18,8 +18,8 @@ function MessageForm({onSubmit, isLoading, isRateLimited, error, setError}) {
             setError("Message cannot be empty, please add your message.");
             return false;
         }
-        if (text.length > 500) {
-            setError("Message must be 500 characters or less, please shorten it.");
+        if (text.length > 300) {
+            setError("Message must be 300 characters or less, please shorten it.");
             return false;
         }
         const repeatedCharsRegex = /(.)\1{10,}/;
