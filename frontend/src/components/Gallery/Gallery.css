@@ -5,7 +5,7 @@
 }
 
 .section-title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: #333;
     text-transform: uppercase;
@@ -54,6 +54,10 @@ text-align: start;
 }
 
 .sort-option {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
     padding: 10px 15px;
     font-size: 0.9rem;
     color: #333;
