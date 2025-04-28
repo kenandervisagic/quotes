@@ -129,7 +129,6 @@ html, body {
 /* Textarea styling */
 .message-textarea {
     font-family: "Inter", sans-serif;
-
     width: 100%;
     padding: 1rem;
     border-radius: 10px;
@@ -173,11 +172,20 @@ html, body {
     color: #85614f;
     border: 1px solid rgba(164, 120, 100, 0.3);
 }
+
+.error-border {
+    border-color: #D9534F;
+}
+
+.error-color {
+    color: #D9534F;
+}
+
 .error-message {
-    color: #333;
     font-size: 0.85rem;
     margin-bottom: 20px;
 }
+
 /* Submissions counter */
 .submissions-counter {
     margin-bottom: 15px;
