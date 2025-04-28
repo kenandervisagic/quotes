@@ -43,7 +43,8 @@ function MessageForm({onSubmit, isLoading, isRateLimited, error, setError}) {
         if (isRateLimited || !isValidMessage(message)) {
             return;
         }
-        onSubmit(message);
+        const escapedValue = message.replace(/\n/g, '\\n'); // Replace real newlines with literal "\n"
+        onSubmit(escapedValue);
         setMessage('');
     };
 
