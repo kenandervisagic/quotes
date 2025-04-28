@@ -27,11 +27,9 @@ function Gallery({ refreshKey }) {
                 }
             }
 
-            console.log(`Fetching: ${apiBaseUrl}/images?${params.toString()}`);
             const response = await fetch(`${apiBaseUrl}/images?${params.toString()}`);
             const data = await response.json();
 
-            console.log("API Response:", data);
 
             setImages((prev) => {
                 const newImages = data.images.filter(
@@ -104,10 +102,16 @@ function Gallery({ refreshKey }) {
                     </button>
                     {sortMenuOpen && (
                         <div className="sort-menu">
-                            <button className="sort-option" onClick={() => handleSortChange('date')}>
+                            <button
+                                className={`sort-option ${sortOrder === 'date' ? 'selected' : ''}`}
+                                onClick={() => handleSortChange('date')}
+                            >
                                 Date
                             </button>
-                            <div className="sort-option" onClick={() => handleSortChange('likes')}>
+                            <div
+                                className={`sort-option ${sortOrder === 'likes' ? 'selected' : ''}`}
+                                onClick={() => handleSortChange('likes')}
+                            >
                                 Likes
                             </div>
                         </div>

@@ -42,15 +42,14 @@
 
 .sort-menu {
     position: absolute;
-text-align: start;
+    text-align: start;
     right: 0;
     background: #fff;
-    border: 1px solid #e5e7eb;
     border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     overflow: hidden;
     z-index: 20;
-    min-width: 100px;
+    min-width: 90px;
 }
 
 .sort-option {
@@ -67,4 +66,9 @@ text-align: start;
 
 .sort-option:hover {
     background-color: #f0f0f0;
+}
+
+.sort-option.selected {
+    background-color: #d9bda5; /* Darker background */
+    color: white; /* White text for contrast */
 }
