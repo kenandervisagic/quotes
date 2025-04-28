@@ -148,44 +148,6 @@ html, body {
     box-shadow: 0 0 0 3px rgba(200, 172, 150, 0.2);
 }
 
-/* Submit button */
-.submit-button {
-    padding: 0.6rem 2rem;
-    background-color: #d9bda5;
-    color: white;
-    border: none;
-    border-radius: 30px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-}
-
-.submit-button:hover {
-    background-color: #c8ac96;
-    transform: scale(1.05);
-}
-
-/* Thank you message styling */
-.thank-you-message {
-    text-align: center;
-    padding: 2rem 0;
-    animation: fadeIn 1s ease-in-out;
-}
-
-.thank-you-message h3 {
-    font-size: 1.3rem;
-    color: #333;
-    margin-bottom: 1rem;
-}
-
-.thank-you-message p {
-    font-size: 0.8rem;
-    color: #555;
-    font-style: italic;
-    margin-bottom: 1rem;
-}
-
 
 .message-textarea:disabled {
     background-color: rgba(229, 222, 207, 0.5);
