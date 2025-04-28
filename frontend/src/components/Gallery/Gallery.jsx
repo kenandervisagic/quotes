@@ -65,8 +65,15 @@ function Gallery({ refreshKey }) {
 
     // Reset and fetch on sortOrder or refreshKey change
     useEffect(() => {
+        // Reset state on refreshKey change to ensure fresh data is fetched
+        setImages([]);
+        setNextStartAfter(null);
+        setHasMore(true);
+
+        // Fetch new images
         fetchImages();
-    }, [sortOrder, refreshKey]);
+    }, [sortOrder, refreshKey]);  // Trigger on sortOrder or refreshKey change
+
 
     // Infinite scroll observer
     useEffect(() => {
