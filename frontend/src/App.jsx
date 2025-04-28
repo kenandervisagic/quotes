@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import Header from './components/Header';
 import MessageForm from './components/MessageForm';
-import SubmissionSuccess from './components/SubmissionSuccess';
+import SubmissionSuccess from "./components/SubmissionSuccess/SubmissionSuccess.jsx";
 import Footer from './components/Footer';
 import {checkRateLimit, updateSubmissionHistory} from './utils/rateLimiting';
 import './App.css';
@@ -94,12 +94,7 @@ function App() {
             <Header/>
             <main className="main-content">
                 <div className="paper-card">
-                    <h2 className="page-title">Submit an Anonymous Message</h2>
-                    <p className="explanation">
-                        This page is a safe space to share things you've never said out loud.
-                        <br/>
-                        Your message will remain anonymous.
-                    </p>
+
 
                     {submitted ? (
                         <SubmissionSuccess
@@ -109,13 +104,22 @@ function App() {
                             onSubmitAnother={handleSubmitAnother}
                         />
                     ) : (
-                        <MessageForm
-                            onSubmit={handleSubmit}
-                            isLoading={isLoading}
-                            isRateLimited={isRateLimited}
-                            error={error}
-                            setError={setError}
-                        />
+                        <>
+                            <h2 className="page-title">Submit an Anonymous Message</h2>
+                            <p className="explanation">
+                                This page is a safe space to share things you've never said out loud.
+                                <br/>
+                                Your message will remain anonymous.
+                            </p>
+                            <MessageForm
+                                onSubmit={handleSubmit}
+                                isLoading={isLoading}
+                                isRateLimited={isRateLimited}
+                                error={error}
+                                setError={setError}
+                            />
+                        </>
+
                     )}
 
                     <Footer/>
