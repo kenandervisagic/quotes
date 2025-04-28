@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
+import {Filter} from "bad-words";
+import {isUrl} from "../utils/isUrl.js";
 
-function MessageForm({ onSubmit, isLoading, isRateLimited, error, setError }) {
+function MessageForm({onSubmit, isLoading, isRateLimited, error, setError}) {
     const [message, setMessage] = useState('');
+
+    const filter = new Filter()
 
     const handleMessageChange = (e) => {
         setMessage(e.target.value);
@@ -11,16 +15,24 @@ function MessageForm({ onSubmit, isLoading, isRateLimited, error, setError }) {
     // Validate message
     const isValidMessage = (text) => {
         if (!text.trim()) {
-            setError("Message cannot be empty.");
+            setError("Message cannot be empty, please add your message.");
             return false;
         }
         if (text.length > 500) {
-            setError("Message must be 500 characters or less.");
+            setError("Message must be 500 characters or less, please shorten it.");
             return false;
         }
         const repeatedCharsRegex = /(.)\1{10,}/;
         if (repeatedCharsRegex.test(text)) {
-            setError("Message contains too many repeated characters.");
+            setError("Message contains too many repeated characters, please shorten it.");
+            return false;
+        }
+        if (filter.isProfane(text)) {
+            setError("Message contains bad words, please be nice.");
+            return false;
+        }
+        if (isUrl(text)) {
+            setError("Message contains urls, please remove any url from message.")
             return false;
         }
         return true;
@@ -43,13 +55,13 @@ function MessageForm({ onSubmit, isLoading, isRateLimited, error, setError }) {
                     onChange={handleMessageChange}
                     placeholder="Write your anonymous message..."
                     rows="5"
-                    className="message-textarea"
+                    className={error ? 'message-textarea error-border' : 'message-textarea'}
                     disabled={isRateLimited || isLoading}
                 />
             </div>
 
             {error && (
-                <div className="error-message">
+                <div className="error-color error-message">
                     <p>{error}</p>
                 </div>
             )}
