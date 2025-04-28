@@ -1,20 +1,21 @@
+import logging
 import os
 import random
 import textwrap
 import uuid
+from io import BytesIO
 
+import requests
+from PIL import Image, ImageDraw, ImageFont
 from bson import ObjectId
 from fastapi import FastAPI, APIRouter, HTTPException
-from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-import requests
-import logging
-from PIL import Image, ImageDraw, ImageFont
-from io import BytesIO
 from minio import Minio
+from pydantic import BaseModel
 
 from mongo import save_submission, submissions_collection
+from utils.validate_message import is_message_valid
 
 app = FastAPI()
 logger = logging.getLogger("uvicorn")
@@ -37,6 +38,7 @@ minio_client = Minio(
     secure=(ENVIRONMENT != "local"),
 )
 
+
 class Message(BaseModel):
     content: str
 
@@ -49,9 +51,8 @@ class Message(BaseModel):
 
     @classmethod
     def validate_content(cls, v):
-        if len(v) > 500:
-            raise ValueError("Quote must be 500 characters or less.")
-        return v
+        return is_message_valid(v)
+
 
 if ENVIRONMENT == "local":
     origins = ["*"]
@@ -65,6 +66,7 @@ app.add_middleware(
     allow_methods=["POST", "GET"],
     allow_headers=["*"],
 )
+
 
 def add_text_to_random_image(text: str) -> BytesIO:
     # color_folder = random.choice(["black", "white"]) no images in black folder
@@ -176,36 +178,36 @@ async def submit_post(message: Message):
         raise HTTPException(status_code=500, detail="Slack webhook URL not set in environment")
 
     # Validate content
-    message.content = Message.validate_content(message.content)
+    if Message.validate_content(message.content):
+        slack_payload = {
+            "text": ":new: :tada: New submit: \n" + message.content
+        }
 
-    slack_payload = {
-        "text": ":new: :tada: New submit: \n" + message.content
-    }
+        try:
+            # Send to Slack
+            response = requests.post(SLACK_WEBHOOK_URL, json=slack_payload)
+            if response.status_code != 200:
+                logger.error(f"Failed to send message to Slack: {response.text}")
+                return JSONResponse(content={"status": "Failed to send message to Slack", "error": response.text},
+                                    status_code=500)
 
-    try:
-        # Send to Slack
-        response = requests.post(SLACK_WEBHOOK_URL, json=slack_payload)
-        if response.status_code != 200:
-            logger.error(f"Failed to send message to Slack: {response.text}")
-            return JSONResponse(content={"status": "Failed to send message to Slack", "error": response.text},
-                                status_code=500)
+            # Generate and upload image
+            unique_id = uuid.uuid4()
+            filename = f"{unique_id}.png"
+            img_io = add_text_to_random_image(message.content)
+            image_url = upload_image_to_minio(img_io, filename)
 
-        # Generate and upload image
-        unique_id = uuid.uuid4()
-        filename = f"{unique_id}.png"
-        img_io = add_text_to_random_image(message.content)
-        image_url = upload_image_to_minio(img_io, filename)
+            # Save submission to MongoDB
+            submission_id = save_submission(image_url)
+            return JSONResponse(
+                content={"status": "success", "image_url": image_url, "submission_id": str(submission_id)})
 
-        # Save submission to MongoDB
-        submission_id = save_submission(image_url)
-        return JSONResponse(content={"status": "success", "image_url": image_url, "submission_id": str(submission_id)})
-
-    except requests.exceptions.RequestException as e:
-        logger.error(f"Error while sending message to Slack: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Failed to send message to Slack: {str(e)}")
-    except Exception as e:
-        logger.error(f"Error generating image: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Failed to generate image: {str(e)}")
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Error while sending message to Slack: {str(e)}")
+            raise HTTPException(status_code=500, detail=f"Failed to send message to Slack: {str(e)}")
+        except Exception as e:
+            logger.error(f"Error generating image: {str(e)}")
+            raise HTTPException(status_code=500, detail=f"Failed to generate image: {str(e)}")
 
 
 @api_router.get("/images")
