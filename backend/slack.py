@@ -13,6 +13,7 @@ import logging
 from PIL import Image, ImageDraw, ImageFont
 from io import BytesIO
 from minio import Minio
+from pymongo import DESCENDING
 
 from mongo import save_submission, submissions_collection
 
@@ -208,42 +209,66 @@ async def submit_post(message: Message):
         raise HTTPException(status_code=500, detail=f"Failed to generate image: {str(e)}")
 
 
+
+# Assuming submissions_collection is your MongoDB collection
 @api_router.get("/images")
-async def get_images(limit: int = 10, start_after: str = None):
+async def get_images(
+    limit: int = 10,
+    sort: str = "date",
+    start_after_id: str = None,
+    start_after_likes: int = None
+):
     try:
-        # Prepare the query filter
+        # Validate sort parameter
+        if sort not in ["date", "likes"]:
+            raise HTTPException(status_code=400, detail="Invalid sort parameter. Must be 'date' or 'likes'.")
+
+        # Define query and sort criteria
         query_filter = {}
+        if sort == "date":
+            sort_fields = [("_id", DESCENDING)]  # Newest first
+            if start_after_id:
+                query_filter = {"_id": {"$lt": ObjectId(start_after_id)}}
+        elif sort == "likes":
+            sort_fields = [("likes", DESCENDING), ("_id", DESCENDING)]  # Likes, then _id as tiebreaker
+            if start_after_id and start_after_likes is not None:
+                query_filter = {
+                    "$or": [
+                        {"likes": {"$lt": start_after_likes}},
+                        {"likes": start_after_likes, "_id": {"$lt": ObjectId(start_after_id)}}
+                    ]
+                }
 
-        if start_after:
-            # Use start_after to fetch results after a specific submission_id
-            query_filter['_id'] = {'$gt': ObjectId(start_after)}
-
-        # Query MongoDB for images with pagination
-        cursor = submissions_collection.find(query_filter).sort("_id", 1).limit(limit)
-
-        # Collect image data
+        # Log for debugging
+        # Fetch from MongoDB
+        cursor = submissions_collection.find(query_filter).sort(sort_fields).limit(limit)
         images_data = []
-        last_submission_id = None
-        for submission in cursor:
+        last_id = None
+        last_likes = None
+
+        for doc in cursor:
             image_data = {
-                "image_url": submission['image_url'],
-                "timestamp": submission['timestamp'].isoformat(),  # Return the timestamp (date)
-                "likes": submission.get('likes', 0),  # Return the number of likes (default to 0 if not available)
-                "submission_id": str(submission['_id'])  # Add the submission_id (MongoDB _id)
+                "submission_id": str(doc["_id"]),
+                "image_url": doc.get("image_url", ""),
+                "timestamp": doc.get("timestamp").isoformat() if doc.get("timestamp") else "",
+                "likes": doc.get("likes", 0)
             }
             images_data.append(image_data)
-            last_submission_id = str(submission['_id'])
+            last_id = str(doc["_id"])
+            last_likes = doc.get("likes", 0) if sort == "likes" else None
 
-        response = {
-            "images": images_data,
-            "next_start_after": last_submission_id if len(images_data) == limit else None
-        }
+        # Prepare response
+        response = {"images": images_data}
+        if len(images_data) == limit:  # More data exists
+            response["next_start_after_id"] = last_id
+            if sort == "likes":
+                response["next_start_after_likes"] = last_likes
 
         return JSONResponse(content=response)
 
     except Exception as e:
-        logger.error(f"Error fetching image URLs from MongoDB: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Failed to fetch image URLs: {str(e)}")
+        logger.error(f"Error fetching images: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to fetch images: {str(e)}")
 
 
 # Endpoint to like or unlike a post
