@@ -1,0 +1,24 @@
+.footer-message {
+    margin-top: 20px;
+    color: #555;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.footer-message a {
+    color: #85614f; /* TikTok color or any color you prefer */
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+.footer-message a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .footer-message {
+        margin-top: 20px;
+        font-size: 0.80rem;
+        text-align: center;
+    }
+}
