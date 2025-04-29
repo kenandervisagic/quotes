@@ -1,7 +1,7 @@
 /* Submit button */
 .submit-button-again {
     padding: 0.6rem 2rem;
-    background-color: var(--color-primary);
+    background-color: var(--color-button);
     color: white;
     border: none;
     border-radius: 30px;
