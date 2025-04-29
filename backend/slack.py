@@ -209,7 +209,7 @@ async def submit_post(message: Message):
 # Assuming submissions_collection is your MongoDB collection
 @api_router.get("/images")
 async def get_images(
-        limit: int = 10,
+        limit: int = 5,
         sort: str = "date",
         start_after_id: str = None,
         start_after_likes: int = None
