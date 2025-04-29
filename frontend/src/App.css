@@ -22,7 +22,7 @@ html, body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #d9bda5;
+    background-color: var(--color-primary);
     background-image: url("assets/light-paper-fibers.png");
     position: relative;
     overflow: hidden;
@@ -44,10 +44,10 @@ html, body {
 .paper-card {
     width: 100%;
     max-width: 500px;
-    background-color: rgba(229, 222, 207, 0.8);
     border-radius: 12px;
     padding: 2rem;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    background-color: var(--color-card-background);
+    box-shadow: 0 4px 20px var(--color-shadow);
     position: relative;
     z-index: 1;
 }
@@ -55,7 +55,7 @@ html, body {
 /* Page title */
 .page-title {
     font-size: 1rem;
-    color: #333;
+    color: var(--color-text-main);
     margin-bottom: 1.5rem;
     text-align: center;
     line-height: 1.2;
@@ -64,7 +64,7 @@ html, body {
 
 .explanation {
     font-size: 0.8rem;
-    color: #555;
+    color: var(--color-text-main);
     margin-bottom: 1.5rem;
     text-align: center;
     line-height: 1.4;

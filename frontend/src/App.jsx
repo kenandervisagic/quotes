@@ -5,6 +5,7 @@ import SubmissionSuccess from "./components/SubmissionSuccess/SubmissionSuccess.
 import Footer from "./components/Footer/Footer.jsx";
 import {checkRateLimit, updateSubmissionHistory} from './utils/rateLimiting';
 import './App.css';
+import "./colors.css"
 import Gallery from "./components/Gallery/Gallery.jsx";
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://kdidp.art/api/v1';

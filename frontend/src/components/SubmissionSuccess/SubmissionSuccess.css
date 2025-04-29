@@ -1,7 +1,7 @@
 /* Submit button */
 .submit-button-again {
     padding: 0.6rem 2rem;
-    background-color: #d9bda5;
+    background-color: var(--color-primary);
     color: white;
     border: none;
     border-radius: 30px;
@@ -12,12 +12,12 @@
 }
 
 .submit-button-again:hover {
-    background-color: #c8ac96;
+    background-color: var(--color-button-hover);
     transform: scale(1.05);
 }
 
 .submit-button-again:disabled {
-    background-color: #c0b5a5;
+    background-color: var(--color-button-disabled);
     cursor: not-allowed;
     transform: none;
     opacity: 0.7;
@@ -31,13 +31,13 @@
 
 .thank-you-message h3 {
     font-size: 1.3rem;
-    color: #333;
+    color: var(--color-text-main);
     margin-bottom: 1rem;
 }
 
 .thank-you-message p {
     font-size: 0.8rem;
-    color: #555;
+    color: var(--color-muted);
     font-style: italic;
 }
 
