@@ -1,5 +1,5 @@
 /* Submit button */
-.submit-button {
+.submit-button-again {
     padding: 0.6rem 2rem;
     background-color: #d9bda5;
     color: white;
@@ -11,9 +11,16 @@
     transition: all 0.3s ease;
 }
 
-.submit-button:hover {
+.submit-button-again:hover {
     background-color: #c8ac96;
     transform: scale(1.05);
+}
+
+.submit-button-again:disabled {
+    background-color: #c0b5a5;
+    cursor: not-allowed;
+    transform: none;
+    opacity: 0.7;
 }
 
 /* Thank you message styling */
@@ -46,3 +53,22 @@
     margin-bottom: 0;
 }
 
+
+.user-image {
+    height: 400px;
+    margin-block: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+@media (max-width: 600px) {
+
+    .user-image {
+        height: 250px;
+        margin-block: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+    }
+}

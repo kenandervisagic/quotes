@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import Header from './components/Header';
-import MessageForm from './components/MessageForm';
+import Header from './components/Header/Header';
+import MessageForm from './components/MessageForm/MessageForm.jsx';
 import SubmissionSuccess from "./components/SubmissionSuccess/SubmissionSuccess.jsx";
-import Footer from './components/Footer';
+import Footer from "./components/Footer/Footer.jsx";
 import {checkRateLimit, updateSubmissionHistory} from './utils/rateLimiting';
 import './App.css';
 import Gallery from "./components/Gallery/Gallery.jsx";
@@ -94,8 +94,6 @@ function App() {
             <Header/>
             <main className="main-content">
                 <div className="paper-card">
-
-
                     {submitted ? (
                         <SubmissionSuccess
                             userImageUrl={userImageUrl}

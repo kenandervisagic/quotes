@@ -34,14 +34,14 @@ function SubmissionSuccess({userImageUrl, isRateLimited, countdown, onSubmitAnot
             <div className="button-container">
                 <button
                     onClick={handleDownload}
-                    className="submit-button"
+                    className="submit-button-again"
                 >
                     Download
                 </button>
                 <p>or</p>
                 <button
                     onClick={onSubmitAnother}
-                    className="submit-button"
+                    className="submit-button-again"
                     disabled={isRateLimited}
                 >
                     {isRateLimited
