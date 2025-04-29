@@ -3,12 +3,12 @@
     text-align: center;
     padding-bottom: 10px;
     margin-bottom: 1rem;
-    border-bottom: 1px solid #666;
+    border-bottom: 1px solid var(--color-muted);
 }
 
 .section-title {
     font-size: 1rem;
-    color: #333;
+    color: var(--color-text-muted);
     text-transform: uppercase;
     letter-spacing: 1px;
     display: inline-block;
@@ -23,14 +23,13 @@
 
 .sort-button {
     background: transparent;
-    border: 1px solid #666;
+    border: 1px solid var(--color-muted);
     padding: 2px 8px;
     border-radius: 9999px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #85614f;
     transition: background-color 0.2s, border-color 0.2s;
 }
 
@@ -38,14 +37,14 @@
 .filter-icon {
     width: 14px;
     height: 14px;
-    color: #666;
+    color: var(--color-muted);
 }
 
 .sort-menu {
     position: absolute;
     text-align: start;
     right: 0;
-    background: #fff;
+    background: var(--color-white);
     border-radius: 8px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
     overflow: hidden;
@@ -60,27 +59,24 @@
     border: none;
     padding: 10px 15px;
     font-size: 0.9rem;
-    color: #333;
+    color: var(--color-text-main);
     cursor: pointer;
     transition: background-color 0.2s;
 }
 
-.sort-option:hover {
-    background-color: #f0f0f0;
-}
 
 .sort-option.selected {
-    background-color: #d9bda5; /* Darker background */
+    background-color: var(--color-primary); /* Darker background */
     color: white; /* White text for contrast */
 }
 
 
 .quotes-container {
-    background-color: rgba(229, 222, 207, 0.8);
+    background-color: var(--color-card-background);
+    box-shadow: 0 4px 20px var(--color-shadow);
     backdrop-filter: blur(20px);
     border-radius: 15px;
     padding: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     width: 100%;
     margin: 30px auto;
     text-align: center;
