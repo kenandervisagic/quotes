@@ -98,16 +98,20 @@ def add_text_to_random_image(text: str) -> BytesIO:
 
     # Centered vertical layout
     line_height = font.getbbox("A")[3] - font.getbbox("A")[1]
-    total_height = line_height * len(lines)
+    line_spacing = int(line_height * 1.2)  # adjust multiplier as needed
+
+    total_height = line_spacing * len(lines)
+
     y_text = (image.height - total_height) // 2
 
     text_color = "white" if color_folder == "white" else "black"
+
 
     for line in lines:
         line_width = draw.textlength(line, font=font)
         x_text = (image.width - line_width) // 2
         draw.text((x_text, y_text), line, font=font, fill=text_color)
-        y_text += line_height
+        y_text += line_spacing
 
     # Add watermark at bottom center
     watermark_text = "@the_words_left_behind"
