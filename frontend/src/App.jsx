@@ -108,8 +108,6 @@ function App() {
                             <h2 className="page-title">Submit an Anonymous Message</h2>
                             <p className="explanation">
                                 This page is a safe space to share things you've never said out loud.
-                                <br/>
-                                Your message will remain anonymous.
                             </p>
                             <MessageForm
                                 onSubmit={handleSubmit}
