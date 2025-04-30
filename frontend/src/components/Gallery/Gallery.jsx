@@ -11,7 +11,7 @@ function Gallery({ refreshKey }) {
     const [sortMenuOpen, setSortMenuOpen] = useState(false);
     const observerRef = useRef(null);
     const isFetchingRef = useRef(false);
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://kdidp.art/api/v1";
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://kdidp.art";
 
     const fetchImages = async (startAfter = null) => {
         if (isFetchingRef.current || !hasMore) return;
@@ -27,7 +27,7 @@ function Gallery({ refreshKey }) {
                 }
             }
 
-            const response = await fetch(`${apiBaseUrl}/images?${params.toString()}`);
+            const response = await fetch(`${apiBaseUrl}/api/v1/images?${params.toString()}`);
             const data = await response.json();
 
 

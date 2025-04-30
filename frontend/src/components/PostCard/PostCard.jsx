@@ -8,7 +8,7 @@ function PostCard({ imageUrl, likes, timestamp, submission_id }) {
     const [animateLike, setAnimateLike] = useState(false);
     const [animateShare, setAnimateShare] = useState(false);
     const [copied, setCopied] = useState(false); // For showing "Copied" feedback
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://kdidp.art/api/v1';
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://kdidp.art';
 
     useEffect(() => {
         const stored = localStorage.getItem(`liked_${imageUrl}`);
@@ -25,11 +25,11 @@ function PostCard({ imageUrl, likes, timestamp, submission_id }) {
             setTimeout(() => setAnimateLike(false), 300);
         }
 
-        // Call API to update like count in the backend
+        // Call API to update like count in the backend-image-generation
         try {
             const likeAction = newLiked ? 'increase' : 'decrease';
 
-            const response = await fetch(`${apiBaseUrl}/like?submission_id=${submission_id}&like_action=${likeAction}`, {
+            const response = await fetch(`${apiBaseUrl}/api/v1/like?submission_id=${submission_id}&like_action=${likeAction}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ function PostCard({ imageUrl, likes, timestamp, submission_id }) {
             }
 
             const result = await response.json();
-            setCurrentLikes(result.likes); // Update the like count with the response from the backend
+            setCurrentLikes(result.likes); // Update the like count with the response from the backend-image-generation
         } catch (error) {
             console.error("Error updating likes:", error);
         }

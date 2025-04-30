@@ -8,7 +8,7 @@ import './App.css';
 import "./colors.css"
 import Gallery from "./components/Gallery/Gallery.jsx";
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://kdidp.art/api/v1';
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://kdidp.art';
 
 function App() {
     const [isLoading, setIsLoading] = useState(false);
@@ -50,7 +50,7 @@ function App() {
         const payload = {content: message};
 
         try {
-            const response = await fetch(`${apiBaseUrl}/submit-message`, {
+            const response = await fetch(`${apiBaseUrl}/api/v2/submit-message`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload),

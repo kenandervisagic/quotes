@@ -7,7 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-backend/__pycache__/
+backend-image-generation/__pycache__/
 __pycache__/
 *.py[cod]
 *$py.class
@@ -24,4 +24,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-!/backend/env/
+!/backend-image-generation/env/
+/backend-image-generation/.venv/
