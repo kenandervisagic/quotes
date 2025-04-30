@@ -9,7 +9,12 @@ from pymongo import DESCENDING
 
 from mongo import submissions_collection
 
-app = FastAPI()
+app = FastAPI(
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None
+)
+
 logger = logging.getLogger("uvicorn")
 api_router = APIRouter()
 
