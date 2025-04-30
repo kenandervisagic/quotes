@@ -16,7 +16,12 @@ from mongo import save_submission
 from utils.validate_message import is_message_valid
 from utils.wrap_text import adjust_text_for_image
 
-app = FastAPI()
+app = FastAPI(
+    docs_url=None,
+    redoc_url=None,
+    openapi_url=None
+)
+
 logger = logging.getLogger("uvicorn")
 api_router = APIRouter()
 
