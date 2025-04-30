@@ -21,21 +21,13 @@ An application for anonymously sharing messages and quotes with others. Post tho
 
 ### Frontend
 - React with Vite
-- JavaScript/TypeScript
-- Node.js
+- JavaScript
 - ESLint for code quality
 
 ### Backend
 - FastAPI
 - Python
-- Slack integration
-
-### DevOps/Infrastructure
-- Docker & Docker Compose
-- GitHub Actions for CI/CD
-- Nginx as reverse proxy
-- Bash scripting
-- Automated deployment workflow
+- MongoDB
 
 ## 🔧 Getting Started
 
