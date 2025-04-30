@@ -16,19 +16,40 @@ services:
     networks:
       - webnet
 
-  backend:
+  backend-image-generation:
     build:
-      context: ./backend
+      context: backend-image-generation
       dockerfile: local.Dockerfile
-    container_name: python-backend
+    container_name: image-generation
     volumes:
-      - ./backend:/app
-    ports:
-      - "8000:8000"
+      - ./backend-image-generation:/app
+    expose:
+      - "8000"
     networks:
       - webnet
     environment:
       - SLACK_WEBHOOK=https://hooks.slack.com/services/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
+      - ENVIRONMENT=local
+      - PYTHONUNBUFFERED=1
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_DB=images
+      - MONGO_USER=mongo
+      - MONGO_PASSWORD=kenomuki
+    restart: on-failure
+
+  backend-core:
+    build:
+      context: backend-image-generation
+      dockerfile: local.Dockerfile
+    container_name: python-core
+    volumes:
+      - ./backend-core:/app
+    expose:
+      - "8000"
+    networks:
+      - webnet
+    environment:
       - ENVIRONMENT=local
       - PYTHONUNBUFFERED=1
       - MONGO_HOST=mongo
@@ -69,6 +90,15 @@ services:
       - webnet
     restart: always
 
+  nginx-gateway:
+    build:
+      context: .nginx-local/
+    container_name: nginx-gateway
+    ports:
+      - "8000:8000"
+    networks:
+      - webnet
+    restart: always
 
 networks:
   webnet:

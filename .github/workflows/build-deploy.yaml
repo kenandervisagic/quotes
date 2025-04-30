@@ -31,8 +31,11 @@ jobs:
           cd $GITHUB_WORKSPACE/frontend/
           docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_frontend:${{ steps.set_output.outputs.short_sha }} .
 
-          cd $GITHUB_WORKSPACE/backend/
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_backend:${{ steps.set_output.outputs.short_sha }} .
+          cd $GITHUB_WORKSPACE/backend-core/
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_backend_core:${{ steps.set_output.outputs.short_sha }} .
+          
+          cd $GITHUB_WORKSPACE/backend-image-generation/
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/anonymous_quotes_backend_image_generation:${{ steps.set_output.outputs.short_sha }} .
         env:
           DOCKER_HOST: ${{ secrets.DOCKER_HOST }}
           CERT_PEM: ${{ secrets.CERT_PEM }}

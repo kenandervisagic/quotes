@@ -1,4 +1,4 @@
-backend/
+backend-image-generation/
 .env.local
 docker-tls-setup.sh
 local.Dockerfile
