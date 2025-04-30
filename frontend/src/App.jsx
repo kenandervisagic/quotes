@@ -50,7 +50,7 @@ function App() {
         const payload = {content: message};
 
         try {
-            const response = await fetch(`${apiBaseUrl}/api/v2/submit-message`, {
+            const response = await fetch(`${apiBaseUrl}/api/generate/submit-message`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload),
