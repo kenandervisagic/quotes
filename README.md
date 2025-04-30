@@ -14,6 +14,7 @@ An application for anonymously sharing messages and quotes with others. Post tho
 - Post anonymous messages and quotes
 - Browse a feed of messages from other users
 - Like and share your favorite quotes
+- Generate images for your messages
 - Responsive design for mobile and desktop
 - Real-time notifications
 
@@ -25,9 +26,23 @@ An application for anonymously sharing messages and quotes with others. Post tho
 - ESLint for code quality
 
 ### Backend
-- FastAPI
+- FastAPI microservices architecture
 - Python
 - MongoDB
+
+### Infrastructure
+- Docker & Docker Compose
+- Nginx for reverse proxy
+- GitHub Actions for CI/CD
+
+## 🏗️ Architecture
+
+The application follows a microservices architecture:
+
+- **backend-core**: Handles core application functionality including user management, messages, and interactions
+- **backend-image-generation**: Dedicated service for image generation functionality
+- **frontend**: React-based user interface
+- **nginx-local**: Reverse proxy for local development
 
 ## 🔧 Getting Started
 
@@ -50,19 +65,23 @@ An application for anonymously sharing messages and quotes with others. Post tho
    ```
 
 3. Access the application:
-    - Frontend: http://localhost:3000
-    - Backend API: http://localhost:8000
+   - Frontend: http://localhost:3000
+   - Core API: http://localhost:8000/api/core
+   - Image Generation API: http://localhost:8000/api/generate
 
 ## 📝 Development
 
 ### Project Structure
 
 ```
-anonymous_messages/
+quotes/
 ├── .docker/
 ├── .github/
-├── backend/
-├── frontend/
+│   └── workflows/
+├── backend-core/             # Core API functionality
+├── backend-image-generation/ # Image generation service
+├── frontend/                 # React application
+├── nginx-local/              # Local development proxy configuration
 ├── .dockerignore
 ├── .env.local
 ├── .gitignore
@@ -70,6 +89,9 @@ anonymous_messages/
 └── README.md
 ```
 
+### Environment Configuration
+
+The application uses `.env.local` for local development configuration. Environment variables for production are managed through the CI/CD pipeline.
 
 ### Branching Strategy
 
@@ -82,8 +104,19 @@ anonymous_messages/
 The application uses GitHub Actions for continuous integration and deployment:
 
 1. On pull requests:
-    - `pr-check.yaml` runs tests and code quality checks
+   - `pr-check.yaml` runs tests and code quality checks
 
 2. On push to `master`:
-    - `build-deploy.yaml` builds and deploys the application
-    - You can track deployment progress in the Actions tab
+   - `build-deploy.yaml` builds and deploys the application
+   - You can track deployment progress in the Actions tab
+
+### API Documentation
+
+- Core API documentation: http://localhost:8000/api/core/docs
+- Image Generation API documentation: http://localhost:8000/api/generate/docs
+
+
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
