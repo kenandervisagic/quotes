@@ -27,7 +27,7 @@ function Gallery({ refreshKey }) {
                 }
             }
 
-            const response = await fetch(`${apiBaseUrl}/api/v1/images?${params.toString()}`);
+            const response = await fetch(`${apiBaseUrl}/api/core/images?${params.toString()}`);
             const data = await response.json();
 
 

@@ -203,4 +203,4 @@ async def submit_post(message: Message):
             raise HTTPException(status_code=500, detail=f"Failed to generate image: {str(e)}")
 
 
-app.include_router(api_router, prefix="/api/v2")
+app.include_router(api_router, prefix="/api/generate")

@@ -142,4 +142,4 @@ async def like_post(submission_id: str, like_action: str):
         raise HTTPException(status_code=500, detail=f"Failed to update likes: {str(e)}")
 
 
-app.include_router(api_router, prefix="/api/v1")
+app.include_router(api_router, prefix="/api/core")

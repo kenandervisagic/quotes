@@ -29,7 +29,7 @@ function PostCard({ imageUrl, likes, timestamp, submission_id }) {
         try {
             const likeAction = newLiked ? 'increase' : 'decrease';
 
-            const response = await fetch(`${apiBaseUrl}/api/v1/like?submission_id=${submission_id}&like_action=${likeAction}`, {
+            const response = await fetch(`${apiBaseUrl}/api/core/like?submission_id=${submission_id}&like_action=${likeAction}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
