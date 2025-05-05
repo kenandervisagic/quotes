@@ -198,11 +198,12 @@ async def submit_post(message: Message):
 
         try:
             # Send to Slack
-            response = requests.post(SLACK_WEBHOOK_URL, json=slack_payload)
-            if response.status_code != 200:
-                logger.error(f"Failed to send message to Slack: {response.text}")
-                return JSONResponse(content={"status": "Failed to send message to Slack", "error": response.text},
-                                    status_code=500)
+            if ENVIRONMENT != "local":
+                response = requests.post(SLACK_WEBHOOK_URL, json=slack_payload)
+                if response.status_code != 200:
+                    logger.error(f"Failed to send message to Slack: {response.text}")
+                    return JSONResponse(content={"status": "Failed to send message to Slack", "error": response.text},
+                                        status_code=500)
 
             # Generate and upload full-size image
             unique_id = uuid.uuid4()
