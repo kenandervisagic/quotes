@@ -18,11 +18,12 @@ client = MongoClient(MONGO_URI)
 db = client[MONGO_DB]
 submissions_collection = db.submissions  # Create a collection named 'submissions'
 
-def save_submission( image_url: str):
+def save_submission( image_url: str, thumbnail_url: str):
     """Save the submission details into MongoDB."""
     timestamp = datetime.utcnow()  # Current timestamp in UTC
     submission_data = {
         "image_url": image_url,
+        "thumbnail_url": thumbnail_url,
         "timestamp": timestamp,
         "likes": 0
     }

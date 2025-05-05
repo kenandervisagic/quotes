@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './PostCard.css';
 import { formatDate } from "../../utils/dateFormat.js";
 
-function PostCard({ imageUrl, likes, timestamp, submission_id }) {
+function PostCard({ imageUrl, likes, timestamp, submission_id, downloadUrl }) {
     const [liked, setLiked] = useState(false);
     const [currentLikes, setCurrentLikes] = useState(likes);
     const [animateLike, setAnimateLike] = useState(false);
@@ -61,7 +61,7 @@ function PostCard({ imageUrl, likes, timestamp, submission_id }) {
 
     const handleDownload = async () => {
         try {
-            const response = await fetch(imageUrl, { mode: 'cors' });
+            const response = await fetch(downloadUrl, { mode: 'cors' });
             const blob = await response.blob();
             const blobUrl = window.URL.createObjectURL(blob);
 

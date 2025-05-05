@@ -71,6 +71,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+def resize_image(image_io: BytesIO, width=552, height=552) -> BytesIO:
+    image = Image.open(image_io).convert("RGB")
+    image.thumbnail((width, height))  # Resize to the desired thumbnail size
+
+    img_io = BytesIO()
+    image.save(img_io, 'PNG')
+    img_io.seek(0)
+    return img_io
 
 def add_text_to_random_image(text: str) -> BytesIO:
     # color_folder = random.choice(["black", "white"]) no images in black folder
@@ -139,8 +147,7 @@ def add_text_to_random_image(text: str) -> BytesIO:
     return img_io
 
 
-# Upload image to Minio
-def upload_image_to_minio(image_io: BytesIO, filename: str) -> str:
+def upload_image_to_minio(image_io: BytesIO, filename: str, bucket_name: str) -> str:
     # Adjust the Minio URL based on the environment when returning the image URL
     if ENVIRONMENT == "local":
         minio_url = "localhost:9000"  # Local Minio URL
@@ -149,7 +156,7 @@ def upload_image_to_minio(image_io: BytesIO, filename: str) -> str:
 
     # Upload the image to Minio
     minio_client.put_object(
-        MINIO_BUCKET_NAME,
+        bucket_name,
         filename,
         image_io,
         len(image_io.getvalue()),
@@ -157,16 +164,15 @@ def upload_image_to_minio(image_io: BytesIO, filename: str) -> str:
     )
 
     if ENVIRONMENT == "local":
-        return f"http://{minio_url}/{MINIO_BUCKET_NAME}/{filename}"
+        return f"http://{minio_url}/{bucket_name}/{filename}"
     else:
-        return f"https://{minio_url}/{MINIO_BUCKET_NAME}/{filename}"  # Return HTTPS URL in production
+        return f"https://{minio_url}/{bucket_name}/{filename}"  # Return HTTPS URL in production
 
 
 # Health check
 @api_router.get("/health", response_class=JSONResponse)
 async def health():
     return {"status": "ok"}
-
 
 # Submit message and generate image
 @api_router.post("/submit-message")
@@ -189,16 +195,25 @@ async def submit_post(message: Message):
                 return JSONResponse(content={"status": "Failed to send message to Slack", "error": response.text},
                                     status_code=500)
 
-            # Generate and upload image
+            # Generate and upload full-size image
             unique_id = uuid.uuid4()
             filename = f"{unique_id}.png"
             img_io = add_text_to_random_image(message.content)
-            image_url = upload_image_to_minio(img_io, filename)
 
-            # Save submission to MongoDB
-            submission_id = save_submission(image_url)
+            # Upload full-size image to Minio
+            full_size_url = upload_image_to_minio(img_io, filename, MINIO_BUCKET_NAME)
+
+            # Resize image and upload to Minio 'thumbnails' bucket
+            thumbnail_filename = f"{unique_id}_thumbnail.png"
+            resized_img_io = resize_image(img_io)  # Resize image to thumbnail size
+            thumbnail_url = upload_image_to_minio(resized_img_io, thumbnail_filename, "thumbnails")
+
+            # Save submission to MongoDB (including both image URLs)
+            submission_id = save_submission(full_size_url, thumbnail_url)
+
             return JSONResponse(
-                content={"status": "success", "image_url": image_url, "submission_id": str(submission_id)})
+                content={"status": "success", "image_url": full_size_url, "thumbnail_url": thumbnail_url, "submission_id": str(submission_id)}
+            )
 
         except requests.exceptions.RequestException as e:
             logger.error(f"Error while sending message to Slack: {str(e)}")

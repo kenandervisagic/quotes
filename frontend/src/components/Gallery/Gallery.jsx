@@ -130,7 +130,8 @@ function Gallery({ refreshKey }) {
                     <PostCard
                         key={img.submission_id}
                         submission_id={img.submission_id}
-                        imageUrl={img.image_url}
+                        imageUrl={img.thumbnail_url}
+                        downloadUrl={img.image_url}
                         timestamp={img.timestamp}
                         likes={img.likes}
                     />
