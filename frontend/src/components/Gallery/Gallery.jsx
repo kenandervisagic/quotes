@@ -113,13 +113,13 @@ function Gallery({ refreshKey }) {
                                 className={`sort-option ${sortOrder === 'date' ? 'selected' : ''}`}
                                 onClick={() => handleSortChange('date')}
                             >
-                                Date
+                                Recent
                             </button>
                             <div
                                 className={`sort-option ${sortOrder === 'likes' ? 'selected' : ''}`}
                                 onClick={() => handleSortChange('likes')}
                             >
-                                Likes
+                                Popular
                             </div>
                         </div>
                     )}
