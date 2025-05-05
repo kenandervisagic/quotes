@@ -71,14 +71,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def resize_image(image_io: BytesIO, width=552, height=552) -> BytesIO:
+def convert_image_to_webp_max_quality(image_io: BytesIO) -> BytesIO:
     image = Image.open(image_io).convert("RGB")
-    image.thumbnail((width, height))  # Resize to the desired thumbnail size
 
-    img_io = BytesIO()
-    image.save(img_io, 'PNG')
-    img_io.seek(0)
-    return img_io
+    # Strip metadata
+    image.info.pop("exif", None)
+    image.info.pop("icc_profile", None)
+
+    output = BytesIO()
+    image.save(
+        output,
+        format="WEBP",
+        quality=100,
+        method=6,
+        lossless=False
+    )
+    output.seek(0)
+    return output
 
 def add_text_to_random_image(text: str) -> BytesIO:
     # color_folder = random.choice(["black", "white"]) no images in black folder
@@ -147,7 +156,7 @@ def add_text_to_random_image(text: str) -> BytesIO:
     return img_io
 
 
-def upload_image_to_minio(image_io: BytesIO, filename: str, bucket_name: str) -> str:
+def upload_image_to_minio(image_io: BytesIO, filename: str, bucket_name: str, content_type: str) -> str:
     # Adjust the Minio URL based on the environment when returning the image URL
     if ENVIRONMENT == "local":
         minio_url = "localhost:9000"  # Local Minio URL
@@ -160,7 +169,7 @@ def upload_image_to_minio(image_io: BytesIO, filename: str, bucket_name: str) ->
         filename,
         image_io,
         len(image_io.getvalue()),
-        content_type="image/png"
+        content_type
     )
 
     if ENVIRONMENT == "local":
@@ -201,12 +210,14 @@ async def submit_post(message: Message):
             img_io = add_text_to_random_image(message.content)
 
             # Upload full-size image to Minio
-            full_size_url = upload_image_to_minio(img_io, filename, MINIO_BUCKET_NAME)
+            full_size_url = upload_image_to_minio(img_io, filename, MINIO_BUCKET_NAME, content_type="image/png")
 
             # Resize image and upload to Minio 'thumbnails' bucket
-            thumbnail_filename = f"{unique_id}_thumbnail.png"
-            resized_img_io = resize_image(img_io)  # Resize image to thumbnail size
-            thumbnail_url = upload_image_to_minio(resized_img_io, thumbnail_filename, "thumbnails")
+            # Convert full image to high-quality WebP thumbnail
+            thumbnail_filename = f"{unique_id}_thumbnail.webp"
+            webp_thumbnail_io = convert_image_to_webp_max_quality(img_io)
+            thumbnail_url = upload_image_to_minio(webp_thumbnail_io, thumbnail_filename, "thumbnails",
+                                                  content_type="image/webp")
 
             # Save submission to MongoDB (including both image URLs)
             submission_id = save_submission(full_size_url, thumbnail_url)

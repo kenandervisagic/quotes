@@ -67,7 +67,7 @@ function PostCard({ imageUrl, likes, timestamp, submission_id, downloadUrl }) {
 
             const link = document.createElement('a');
             link.href = blobUrl;
-            link.download = 'image.jpg'; // you can generate dynamically
+            link.download = 'image'; // you can generate dynamically
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
