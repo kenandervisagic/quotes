@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './PostCard.css';
+import noImage from '../../assets/no-picture.jpg'
 import { formatDate } from "../../utils/dateFormat.js";
-
-function PostCard({ imageUrl, likes, timestamp, submission_id, downloadUrl }) {
+function PostCard({ imageUrl, likes, timestamp, submission_id, downloadUrl, username }) {
     const [liked, setLiked] = useState(false);
     const [currentLikes, setCurrentLikes] = useState(likes);
     const [animateLike, setAnimateLike] = useState(false);
@@ -80,6 +80,12 @@ function PostCard({ imageUrl, likes, timestamp, submission_id, downloadUrl }) {
 
     return (
         <div className="post-card">
+            <div className="post-card-header">
+                <div className="post-card-header-inline">
+                    <img src={noImage} alt="profile-picture"/>
+                    <p>{username}</p>
+                </div>
+            </div>
             <img src={imageUrl} alt="Submission" className="post-image" />
             <div className="post-actions">
                 <div className="post-actions-left">
