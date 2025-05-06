@@ -103,6 +103,29 @@
 .download-button:hover, .like-button:hover, .share-button:hover {
     transform: scale(1.1);
 }
+
+.post-card-header {
+    margin: 3px 0 3px 8px;
+    display: inline-flex;
+}
+
+.post-card-header-inline {
+    display: inline-flex;
+    align-items: center;
+}
+
+.post-card-header img {
+    opacity: 80%;
+    margin: 3px;
+    border-radius: 99px;
+    width: 23px;
+    height: auto;
+}
+.post-card-header p {
+    color: var(--color-text-light);
+    margin-left: 4px;
+    font-size: 13px;
+}
 .copied-feedback {
     position: absolute;
     top: -25px;

@@ -1,7 +1,7 @@
 import os
 from pymongo import MongoClient
-from datetime import datetime
 import random
+
 # Environment variables
 MONGO_HOST = os.getenv("MONGO_HOST", "mongo")
 MONGO_PORT = os.getenv("MONGO_PORT", "27017")
@@ -15,7 +15,7 @@ MONGO_URI = f"mongodb://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}/
 # Initialize MongoDB client
 client = MongoClient(MONGO_URI)
 db = client[MONGO_DB]
-submissions_collection = db.submissions  # Create a collection named 'submissions'
+submissions_collection = db.submissions  # Access the 'submissions' collection
 
 anonymous_alternatives = [
     "someone_like_you",
@@ -70,17 +70,19 @@ anonymous_alternatives = [
     "quiet_echo"
 ]
 
-def save_submission( image_url: str, thumbnail_url: str):
-    """Save the submission details into MongoDB."""
-    timestamp = datetime.utcnow()  # Current timestamp in UTC
-    submission_data = {
-        "image_url": image_url,
-        "thumbnail_url": thumbnail_url,
-        "timestamp": timestamp,
-        "likes": 0,
-        "username": random.choice(anonymous_alternatives)
-    }
+# Fetch all submissions from MongoDB
+submissions = submissions_collection.find()
 
-    # Insert the submission data into MongoDB
-    result = submissions_collection.insert_one(submission_data)
-    return result.inserted_id
+# Iterate through each submission and add a random username
+for submission in submissions:
+    random_username = random.choice(anonymous_alternatives)
+
+    # Update the submission with the random username
+    submissions_collection.update_one(
+        {"_id": submission["_id"]},  # Find the document by its ID
+        {"$set": {"username": random_username}}  # Add/Update the 'username' field
+    )
+
+    print(f"Updated submission with username: {random_username}")
+
+print("Username updates completed for all submissions.")

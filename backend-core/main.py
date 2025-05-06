@@ -82,7 +82,8 @@ async def get_images(
                 "image_url": doc.get("image_url", ""),
                 "thumbnail_url": doc.get("thumbnail_url", ""),
                 "timestamp": doc.get("timestamp").isoformat() if doc.get("timestamp") else "",
-                "likes": doc.get("likes", 0)
+                "likes": doc.get("likes", 0),
+                "username": doc.get("username", "unknown")
             }
             images_data.append(image_data)
             last_id = str(doc["_id"])
