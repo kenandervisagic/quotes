@@ -71,6 +71,7 @@
 /* Textarea styling */
 .message-textarea {
     font-family: "Inter", sans-serif;
+    font-style: italic;
     width: 100%;
     padding: 1rem;
     border-radius: 10px;
@@ -97,6 +98,7 @@
 }
 
 @media (max-width: 600px) {
+
     .message-textarea {
         font-size: 0.75rem;
         padding: 0.8rem;
