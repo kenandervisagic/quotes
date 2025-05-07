@@ -11,7 +11,7 @@ function Gallery({ refreshKey }) {
     const [sortMenuOpen, setSortMenuOpen] = useState(false);
     const observerRef = useRef(null);
     const isFetchingRef = useRef(false);
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://10.13.14.7";
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "http://10.13.14.10";
 
     const fetchImages = async (startAfter = null) => {
         if (isFetchingRef.current || !hasMore) return;

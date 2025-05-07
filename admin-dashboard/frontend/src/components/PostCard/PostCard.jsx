@@ -4,7 +4,7 @@ import noImage from '../../assets/no-picture.jpg'
 import { formatDate } from "../../utils/dateFormat.js";
 function PostCard({ imageUrl, likes, timestamp, submission_id, downloadUrl, username, onDelete  }) {
 
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://10.13.14.7';
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://10.13.14.10';
 
     const handleDelete = async () => {
         if (!submission_id) {
