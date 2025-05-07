@@ -1,0 +1,124 @@
+import React, { useState, useEffect } from 'react';
+import MessageForm from '../MessageForm/MessageForm.jsx';
+import SubmissionSuccess from "../SubmissionSuccess/SubmissionSuccess.jsx";
+import Footer from "../Footer/Footer.jsx";
+import Gallery from "../Gallery/Gallery.jsx";
+import { checkRateLimit, updateSubmissionHistory } from '../../utils/rateLimiting.js';
+
+import '../../App.css';
+import "../../colors.css";
+
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://kdidp.art';
+
+function MainContent() {
+    const [isLoading, setIsLoading] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+    const [isRateLimited, setIsRateLimited] = useState(false);
+    const [countdown, setCountdown] = useState(0);
+    const [userImageUrl, setUserImageUrl] = useState(null);
+    const [error, setError] = useState(null);
+    const [refreshKey, setRefreshKey] = useState(0);
+
+    useEffect(() => {
+        const rateStatus = checkRateLimit();
+        setIsRateLimited(rateStatus.isLimited);
+        if (rateStatus.isLimited) {
+            setCountdown(rateStatus.remainingCooldown);
+        }
+    }, []);
+
+    useEffect(() => {
+        let timer;
+        if (countdown > 0) {
+            timer = setTimeout(() => {
+                setCountdown(countdown - 1000);
+            }, 1000);
+        } else if (countdown === 0 && isRateLimited) {
+            setIsRateLimited(false);
+        }
+        return () => {
+            if (timer) clearTimeout(timer);
+        };
+    }, [countdown, isRateLimited]);
+
+    const handleSubmit = async (message) => {
+        setIsLoading(true);
+        setError(null);
+
+        const payload = { content: message };
+
+        try {
+            const response = await fetch(`${apiBaseUrl}/api/generate/submit-message`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                setUserImageUrl(data.image_url);
+                setSubmitted(true);
+
+                const rateStatus = updateSubmissionHistory();
+                setIsRateLimited(rateStatus.isLimited);
+                setCountdown(rateStatus.remainingCooldown);
+
+                setRefreshKey(prev => prev + 1);
+            } else {
+                setError(data.error || "Failed to submit message.");
+            }
+        } catch (error) {
+            setError("Error submitting message. Please try again.");
+            console.error("Error:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleSubmitAnother = () => {
+        setSubmitted(false);
+        setUserImageUrl(null);
+        if (!isRateLimited) {
+            const rateStatus = checkRateLimit();
+            setIsRateLimited(rateStatus.isLimited);
+            if (rateStatus.isLimited) {
+                setCountdown(rateStatus.remainingCooldown);
+            }
+        }
+    };
+
+    return (
+        <main className="main-content">
+            <div className="paper-card">
+                {submitted ? (
+                    <SubmissionSuccess
+                        userImageUrl={userImageUrl}
+                        isRateLimited={isRateLimited}
+                        countdown={countdown}
+                        onSubmitAnother={handleSubmitAnother}
+                    />
+                ) : (
+                    <>
+                        <h2 className="page-title">Submit an Anonymous Message</h2>
+                        <p className="explanation">
+                            This page is a safe space to share things you've never said out loud.
+                        </p>
+                        <MessageForm
+                            onSubmit={handleSubmit}
+                            isLoading={isLoading}
+                            isRateLimited={isRateLimited}
+                            error={error}
+                            setError={setError}
+                        />
+                    </>
+                )}
+
+                <Footer />
+            </div>
+
+            <Gallery refreshKey={refreshKey} />
+        </main>
+    );
+}
+
+export default MainContent;
