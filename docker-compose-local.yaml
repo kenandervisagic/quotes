@@ -1,4 +1,21 @@
 services:
+  frontend-admin:
+    build:
+      context: ./admin-dashboard/frontend
+      dockerfile: local.Dockerfile
+    container_name: frontend-admin
+    volumes:
+      - ./admin-dashboard/frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    env_file:
+      - .env.local
+    ports:
+      - "3001:3001"
+    networks:
+      - webnet
+
   frontend:
     build:
       context: ./frontend
@@ -15,6 +32,27 @@ services:
       - "3000:3000"
     networks:
       - webnet
+
+  backend-admin:
+    build:
+      context: ./admin-dashboard/backend
+      dockerfile: local.Dockerfile
+    container_name: backend-admin
+    volumes:
+      - ./admin-dashboard/backend:/app
+    expose:
+      - "8000"
+    networks:
+      - webnet
+    environment:
+      - ENVIRONMENT=local
+      - PYTHONUNBUFFERED=1
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_DB=images
+      - MONGO_USER=mongo
+      - MONGO_PASSWORD=kenomuki
+    restart: on-failure
 
   backend-image-generation:
     build:
