@@ -3,7 +3,7 @@ import os
 import random
 import uuid
 from io import BytesIO
-
+import time
 import requests
 from PIL import Image, ImageDraw, ImageFont
 from fastapi import FastAPI, APIRouter, HTTPException
@@ -30,7 +30,7 @@ SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK")
 MINIO_URL = os.getenv("MINIO_URL", "minio:9000")
 MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY", "muki")
 MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY", "kenomuki")
-MINIO_BUCKET_NAME = os.getenv("MINIO_BUCKET_NAME", "thumbnail")
+MINIO_BUCKET_NAME = os.getenv("MINIO_BUCKET_NAME", "thumbnails")
 FONT_PATH = os.getenv("FONT_PATH", "ReenieBeanie-Regular.ttf")
 ENVIRONMENT = os.getenv("ENVIRONMENT", "")
 
@@ -167,48 +167,81 @@ async def health():
 
 
 # Submit message and generate image
+import time  # Add this at the top if not already imported
+
 @api_router.post("/submit-message")
 async def submit_post(message: Message):
+    start_total = time.time()
+
     if not SLACK_WEBHOOK_URL:
         logger.error("Slack webhook URL is not set in the environment.")
         raise HTTPException(status_code=500, detail="Slack webhook URL not set in environment")
 
-    # Validate content
-    if Message.validate_content(message.content):
+    # Validation
+    validate_start = time.time()
+    if not Message.validate_content(message.content):
+        logger.warning("Invalid message submitted")
+        raise HTTPException(status_code=400, detail="Invalid message")
+    validate_end = time.time()
+    logger.info(f"[TIMING] Message validation: {validate_end - validate_start:.3f}s")
+
+    # Slack notification (only if not local)
+    slack_start = time.time()
+    if ENVIRONMENT != "local":
         slack_payload = {
             "text": ":new: :tada: New submit: \n" + message.content
         }
-
         try:
-            # Send to Slack
-            if ENVIRONMENT != "local":
-                response = requests.post(SLACK_WEBHOOK_URL, json=slack_payload)
-                if response.status_code != 200:
-                    logger.error(f"Failed to send message to Slack: {response.text}")
-                    return JSONResponse(content={"status": "Failed to send message to Slack", "error": response.text},
-                                        status_code=500)
-
-            # Generate and upload image as WebP
-            unique_id = uuid.uuid4()
-            filename = f"{unique_id}.webp"  # Change the extension to .webp
-            img_io = add_text_to_image_and_save_as_webp(message.content)
-
-            # Upload full-size image to Minio
-            full_size_url = upload_image_to_minio(img_io, filename, MINIO_BUCKET_NAME, content_type="image/webp")
-
-            # Save submission to MongoDB (including only image URL)
-            submission_id = save_submission(full_size_url)
-
-            return JSONResponse(
-                content={"status": "success", "image_url": full_size_url, "submission_id": str(submission_id)}
-            )
-
+            response = requests.post(SLACK_WEBHOOK_URL, json=slack_payload)
+            if response.status_code != 200:
+                logger.error(f"Failed to send message to Slack: {response.text}")
+                return JSONResponse(content={"status": "Failed to send message to Slack", "error": response.text},
+                                    status_code=500)
         except requests.exceptions.RequestException as e:
             logger.error(f"Error while sending message to Slack: {str(e)}")
             raise HTTPException(status_code=500, detail=f"Failed to send message to Slack: {str(e)}")
-        except Exception as e:
-            logger.error(f"Error generating image: {str(e)}")
-            raise HTTPException(status_code=500, detail=f"Failed to generate image: {str(e)}")
+    slack_end = time.time()
+    logger.info(f"[TIMING] Slack webhook: {slack_end - slack_start:.3f}s")
+
+    # Image generation
+    gen_start = time.time()
+    try:
+        unique_id = uuid.uuid4()
+        filename = f"{unique_id}.webp"
+        img_io = add_text_to_image_and_save_as_webp(message.content)
+    except Exception as e:
+        logger.error(f"Image generation failed: {str(e)}")
+        raise HTTPException(status_code=500, detail="Image generation failed")
+    gen_end = time.time()
+    logger.info(f"[TIMING] Image generation: {gen_end - gen_start:.3f}s")
+
+    # Upload to MinIO
+    upload_start = time.time()
+    try:
+        full_size_url = upload_image_to_minio(img_io, filename, MINIO_BUCKET_NAME, content_type="image/webp")
+    except Exception as e:
+        logger.error(f"MinIO upload failed: {str(e)}")
+        raise HTTPException(status_code=500, detail="Image upload failed")
+    upload_end = time.time()
+    logger.info(f"[TIMING] MinIO upload: {upload_end - upload_start:.3f}s")
+
+    # Save to Mongo
+    db_start = time.time()
+    try:
+        submission_id = save_submission(full_size_url)
+    except Exception as e:
+        logger.error(f"MongoDB save failed: {str(e)}")
+        raise HTTPException(status_code=500, detail="Submission save failed")
+    db_end = time.time()
+    logger.info(f"[TIMING] MongoDB save: {db_end - db_start:.3f}s")
+
+    total_end = time.time()
+    logger.info(f"[TIMING] Total request time: {total_end - start_total:.3f}s")
+
+    return JSONResponse(
+        content={"status": "success", "image_url": full_size_url, "submission_id": str(submission_id)}
+    )
+
 
 
 app.include_router(api_router, prefix="/api/generate")
