@@ -32,7 +32,7 @@ services:
       - /home/ubuntu/website/logs:/var/log/nginx
     networks:
       vpn_custom_network:
-        ipv4_address: 10.13.14.7
+        ipv4_address: 10.13.14.10
     restart: always
 
 networks:
