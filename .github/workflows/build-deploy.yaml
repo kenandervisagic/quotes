@@ -116,7 +116,7 @@ jobs:
 
   deploy-admin:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-admin
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
