@@ -122,6 +122,7 @@ services:
       MONGO_INITDB_DATABASE: images
       MONGO_INITDB_ROOT_USERNAME: mongo
       MONGO_INITDB_ROOT_PASSWORD: kenomuki
+    command: ["mongod", "--quiet"]
     volumes:
       - mongo_data:/data/db
     networks:

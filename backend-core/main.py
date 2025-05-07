@@ -79,7 +79,6 @@ async def get_images(
         for doc in cursor:
             image_data = {
                 "submission_id": str(doc["_id"]),
-                "image_url": doc.get("image_url", ""),
                 "thumbnail_url": doc.get("thumbnail_url", ""),
                 "timestamp": doc.get("timestamp").isoformat() if doc.get("timestamp") else "",
                 "likes": doc.get("likes", 0),
