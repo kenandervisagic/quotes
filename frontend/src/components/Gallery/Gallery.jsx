@@ -135,7 +135,6 @@ function Gallery({refreshKey}) {
                         key={img.submission_id}
                         submission_id={img.submission_id}
                         imageUrl={img.thumbnail_url}
-                        downloadUrl={img.image_url}
                         username={img.username}
                         timestamp={img.timestamp}
                         likes={img.likes}

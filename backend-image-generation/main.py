@@ -30,7 +30,7 @@ SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK")
 MINIO_URL = os.getenv("MINIO_URL", "minio:9000")
 MINIO_ACCESS_KEY = os.getenv("MINIO_ACCESS_KEY", "muki")
 MINIO_SECRET_KEY = os.getenv("MINIO_SECRET_KEY", "kenomuki")
-MINIO_BUCKET_NAME = os.getenv("MINIO_BUCKET_NAME", "images")
+MINIO_BUCKET_NAME = os.getenv("MINIO_BUCKET_NAME", "thumbnail")
 FONT_PATH = os.getenv("FONT_PATH", "ReenieBeanie-Regular.ttf")
 ENVIRONMENT = os.getenv("ENVIRONMENT", "")
 
@@ -71,26 +71,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-def convert_image_to_webp_max_quality(image_io: BytesIO) -> BytesIO:
-    image = Image.open(image_io).convert("RGB")
-
-    # Strip metadata
-    image.info.pop("exif", None)
-    image.info.pop("icc_profile", None)
-
-    output = BytesIO()
-    image.save(
-        output,
-        format="WEBP",
-        quality=100,
-        method=6,
-        lossless=False
-    )
-    output.seek(0)
-    return output
-
-def add_text_to_random_image(text: str) -> BytesIO:
-    # color_folder = random.choice(["black", "white"]) no images in black folder
+def add_text_to_image_and_save_as_webp(text: str) -> BytesIO:
     color_folder = "white"
     image_dir = os.path.join("images", color_folder)
     image_files = [f for f in os.listdir(image_dir) if f.lower().endswith((".png", ".jpg", ".jpeg"))]
@@ -150,8 +131,9 @@ def add_text_to_random_image(text: str) -> BytesIO:
     image = image.convert("RGBA")
     image = Image.alpha_composite(image, watermark_layer)
 
+    # Save the image directly as WebP
     img_io = BytesIO()
-    image.convert("RGB").save(img_io, 'PNG')  # save final image without alpha
+    image.save(img_io, format="WEBP", quality=100, method=6, lossless=False)
     img_io.seek(0)
     return img_io
 
@@ -183,6 +165,7 @@ def upload_image_to_minio(image_io: BytesIO, filename: str, bucket_name: str, co
 async def health():
     return {"status": "ok"}
 
+
 # Submit message and generate image
 @api_router.post("/submit-message")
 async def submit_post(message: Message):
@@ -205,26 +188,19 @@ async def submit_post(message: Message):
                     return JSONResponse(content={"status": "Failed to send message to Slack", "error": response.text},
                                         status_code=500)
 
-            # Generate and upload full-size image
+            # Generate and upload image as WebP
             unique_id = uuid.uuid4()
-            filename = f"{unique_id}.png"
-            img_io = add_text_to_random_image(message.content)
+            filename = f"{unique_id}.webp"  # Change the extension to .webp
+            img_io = add_text_to_image_and_save_as_webp(message.content)
 
             # Upload full-size image to Minio
-            full_size_url = upload_image_to_minio(img_io, filename, MINIO_BUCKET_NAME, content_type="image/png")
+            full_size_url = upload_image_to_minio(img_io, filename, MINIO_BUCKET_NAME, content_type="image/webp")
 
-            # Resize image and upload to Minio 'thumbnails' bucket
-            # Convert full image to high-quality WebP thumbnail
-            thumbnail_filename = f"{unique_id}_thumbnail.webp"
-            webp_thumbnail_io = convert_image_to_webp_max_quality(img_io)
-            thumbnail_url = upload_image_to_minio(webp_thumbnail_io, thumbnail_filename, "thumbnails",
-                                                  content_type="image/webp")
-
-            # Save submission to MongoDB (including both image URLs)
-            submission_id = save_submission(full_size_url, thumbnail_url)
+            # Save submission to MongoDB (including only image URL)
+            submission_id = save_submission(full_size_url)
 
             return JSONResponse(
-                content={"status": "success", "image_url": full_size_url, "thumbnail_url": thumbnail_url, "submission_id": str(submission_id)}
+                content={"status": "success", "image_url": full_size_url, "submission_id": str(submission_id)}
             )
 
         except requests.exceptions.RequestException as e:

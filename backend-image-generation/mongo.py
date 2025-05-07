@@ -70,12 +70,11 @@ anonymous_alternatives = [
     "quiet_echo"
 ]
 
-def save_submission( image_url: str, thumbnail_url: str):
+def save_submission( image_url: str):
     """Save the submission details into MongoDB."""
     timestamp = datetime.utcnow()  # Current timestamp in UTC
     submission_data = {
-        "image_url": image_url,
-        "thumbnail_url": thumbnail_url,
+        "thumbnail_url": image_url,
         "timestamp": timestamp,
         "likes": 0,
         "username": random.choice(anonymous_alternatives)
