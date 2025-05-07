@@ -1,0 +1,113 @@
+/* Form styling */
+.message-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Textarea container */
+.textarea-container {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s ease;
+    position: relative;
+}
+
+.textarea-container:hover {
+    transform: scale(1.01);
+}
+
+.error-color {
+    color: var(--color-error);
+}
+
+
+.error-border {
+    border-color: var(--color-error);
+}
+
+
+.error-message {
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+}
+
+/* Rate limit message styling */
+.rate-limit-message {
+    background-color: var(--color-rate-limit-bg);
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--color-text-accent);
+    border: 1px solid var(--color-blur-border);
+}
+
+.submit-button {
+    padding: 0.6rem 2rem;
+    background-color: var(--color-button);
+    color: var(--color-white);
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px var(--color-shadow);
+    transition: all 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: var(--color-button-hover);
+    transform: scale(1.05);
+}
+
+.submit-button:disabled {
+    background-color: var(--color-button-disabled);
+    cursor: not-allowed;
+    transform: none;
+    opacity: 0.7;
+}
+
+/* Textarea styling */
+.message-textarea {
+    font-family: "Inter", sans-serif;
+    font-style: italic;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 10px;
+    border: 1px solid var(--color-border);
+    background-color: rgba(255, 255, 255, 0.9);
+    color: var(--color-text-main);
+    font-size: 0.8rem;
+    resize: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.message-textarea:focus {
+    outline: none;
+    border-color: var(--color-border-hover);
+    box-shadow: 0 0 0 3px var(--color-outline);
+}
+
+
+.message-textarea:disabled {
+    background-color: var(--color-background-disabled);
+    cursor: not-allowed;
+    color: #999;
+}
+
+@media (max-width: 600px) {
+
+    .message-textarea {
+        font-size: 0.75rem;
+        padding: 0.8rem;
+    }
+
+    .submit-button {
+        font-size: 1.1rem;
+        padding: 0.5rem 1.8rem;
+    }
+
+}
+

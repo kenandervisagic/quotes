@@ -1,0 +1,74 @@
+/* Submit button */
+.submit-button-again {
+    padding: 0.6rem 2rem;
+    background-color: var(--color-button);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.submit-button-again:hover {
+    background-color: var(--color-button-hover);
+    transform: scale(1.05);
+}
+
+.submit-button-again:disabled {
+    background-color: var(--color-button-disabled);
+    cursor: not-allowed;
+    transform: none;
+    opacity: 0.7;
+}
+
+/* Thank you message styling */
+.thank-you-message {
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.thank-you-message h3 {
+    font-size: 1.3rem;
+    color: var(--color-text-main);
+    margin-bottom: 1rem;
+}
+
+.thank-you-message p {
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    font-style: italic;
+}
+
+.button-container {
+    gap: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.button-container p {
+    margin-bottom: 0;
+}
+
+
+.user-image {
+    height: 400px;
+    margin-block: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+@media (max-width: 600px) {
+
+    .user-image {
+        height: 250px;
+        margin-block: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        overflow: hidden;
+    }
+}

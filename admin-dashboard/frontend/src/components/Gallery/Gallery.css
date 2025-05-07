@@ -1,0 +1,114 @@
+.quotes-header {
+    position: relative;
+    text-align: center;
+    padding-bottom: 10px;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--color-muted);
+}
+
+.section-title {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-block;
+}
+
+.sort-wrapper {
+    position: absolute;
+    right: 0;
+    top: 33%;
+    transform: translateY(-50%);
+}
+
+.sort-button {
+    background: transparent;
+    border: 1px solid var(--color-muted);
+    padding: 2px 8px;
+    border-radius: 9999px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+
+.filter-icon {
+    width: 14px;
+    height: 14px;
+    color: var(--color-muted);
+}
+
+.sort-menu {
+    position: absolute;
+    text-align: start;
+    right: 0;
+    background: var(--color-white);
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    z-index: 20;
+    min-width: 90px;
+}
+
+.sort-option {
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    color: var(--color-text-main);
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+
+.sort-option.selected {
+    background-color: var(--color-button); /* Darker background */
+    color: white; /* White text for contrast */
+}
+
+
+.quotes-container {
+    background-color: var(--color-card-background);
+    box-shadow: 0 4px 20px var(--color-shadow);
+    backdrop-filter: blur(20px);
+    border-radius: 15px;
+    padding: 15px;
+    width: 100%;
+    margin: 30px auto;
+    text-align: center;
+}
+
+.quotes-boxes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.quote-box {
+    height: 400px;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.quote-box img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+    .quote-box {
+        height: 300px;
+    }
+    .quotes-boxes {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
