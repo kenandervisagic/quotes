@@ -103,6 +103,11 @@
     object-fit: contain;
     border-radius: 8px;
 }
+.error-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 @media (max-width: 600px) {
     .quote-box {
