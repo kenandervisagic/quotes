@@ -30,7 +30,6 @@ services:
       - 80
     volumes:
       - /home/ubuntu/website/logs:/var/log/nginx
-      - /home/ubuntu/website/logs:/var/log/nginx
       - /home/ubuntu/website/nginx/certificates:/etc/letsencrypt
       - /home/ubuntu/website/nginx/certificates-data:/data/certbot
     networks:
