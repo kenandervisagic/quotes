@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import PostCard from "../PostCard/PostCard.jsx";
 import "./Gallery.css";
 
-function Gallery({ refreshKey }) {
+function Gallery({refreshKey}) {
     const [images, setImages] = useState([]);
     const [nextStartAfter, setNextStartAfter] = useState(null); // { id, likes } or null
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
+    const [fetchError, setFetchError] = useState(false);
     const [sortOrder, setSortOrder] = useState("date");
     const [sortMenuOpen, setSortMenuOpen] = useState(false);
     const observerRef = useRef(null);
@@ -14,12 +15,12 @@ function Gallery({ refreshKey }) {
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://kdidp.art";
 
     const fetchImages = async (startAfter = null) => {
-        if (isFetchingRef.current || !hasMore) return;
+        if (isFetchingRef.current || !hasMore || fetchError) return; // 👈 block on error
         isFetchingRef.current = true;
         setIsLoading(true);
 
         try {
-            const params = new URLSearchParams({ limit: "5", sort: sortOrder });
+            const params = new URLSearchParams({limit: "5", sort: sortOrder});
             if (startAfter?.id) {
                 params.append("start_after_id", startAfter.id);
                 if (sortOrder === "likes" && startAfter.likes !== undefined) {
@@ -28,8 +29,8 @@ function Gallery({ refreshKey }) {
             }
 
             const response = await fetch(`${apiBaseUrl}/api/core/images?${params.toString()}`);
+            if (!response.ok) throw new Error("Failed to fetch"); // ✅ catch non-200s
             const data = await response.json();
-
 
             setImages((prev) => {
                 const newImages = data.images.filter(
@@ -39,7 +40,7 @@ function Gallery({ refreshKey }) {
             });
 
             if (data.next_start_after_id) {
-                const next = { id: data.next_start_after_id };
+                const next = {id: data.next_start_after_id};
                 if (sortOrder === "likes" && data.next_start_after_likes !== undefined) {
                     next.likes = data.next_start_after_likes;
                 }
@@ -47,8 +48,11 @@ function Gallery({ refreshKey }) {
             } else {
                 setHasMore(false);
             }
+
+            setFetchError(false); // ✅ reset error if successful
         } catch (error) {
             console.error("Fetch error:", error);
+            setFetchError(true); // ✅ block future fetches
         } finally {
             setIsLoading(false);
             isFetchingRef.current = false;
@@ -79,11 +83,11 @@ function Gallery({ refreshKey }) {
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
-                if (entries[0].isIntersecting && hasMore && !isLoading) {
+                if (entries[0].isIntersecting && hasMore && !isLoading && !fetchError) {
                     fetchImages(nextStartAfter);
                 }
             },
-            { threshold: 0.1 }
+            {threshold: 0.1}
         );
 
         if (observerRef.current) observer.observe(observerRef.current);
@@ -137,9 +141,14 @@ function Gallery({ refreshKey }) {
                         likes={img.likes}
                     />
                 ))}
-                <div ref={observerRef} style={{ height: "20px" }} />
-                {isLoading && <p>Loading...</p>}
+                <div ref={observerRef} style={{height: "20px"}}/>
             </div>
+            {isLoading && <p>Loading...</p>}
+            {fetchError && (
+                <div className="error-banner">
+                    <p>Something went wrong :(</p>
+                </div>
+            )}
         </div>
     );
 }
