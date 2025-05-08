@@ -34,6 +34,8 @@ An application for anonymously sharing messages and quotes with others. Post tho
 - Docker & Docker Compose
 - Nginx for reverse proxy
 - GitHub Actions for CI/CD
+- Minio for image storing
+- Grafana + Prometheus for monitoring and alerts
 
 ## 🏗️ Architecture
 
