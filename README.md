@@ -41,6 +41,7 @@ The application follows a microservices architecture:
 
 - **backend-core**: Handles core application functionality including user management, messages, and interactions
 - **backend-image-generation**: Dedicated service for image generation functionality
+- **admin-dashboard**: A frontend + backend app built to manage submitted quotes (Only accesible via VPN)
 - **frontend**: React-based user interface
 - **nginx-local**: Reverse proxy for local development
 
@@ -66,6 +67,7 @@ The application follows a microservices architecture:
 
 3. Access the application:
    - Frontend: http://localhost:3000
+   - Admin Panel: http://localhost:3001
    - Core API: http://localhost:8000/api/core
    - Image Generation API: http://localhost:8000/api/generate
 
@@ -79,6 +81,7 @@ quotes/
 ├── .github/
 │   └── workflows/
 ├── backend-core/             # Core API functionality
+├── admin-dashboard/             # Admin dashboard panel
 ├── backend-image-generation/ # Image generation service
 ├── frontend/                 # React application
 ├── nginx-local/              # Local development proxy configuration
