@@ -110,7 +110,8 @@ The application uses GitHub Actions for continuous integration and deployment:
    - `pr-check.yaml` runs tests and code quality checks
 
 2. On push to `master`:
-   - `build-deploy.yaml` builds and deploys the application
+   - `build-deploy-core.yaml` builds and deploys the core application
+   - `build-deploy-admin.yaml` builds and deploys the admin dashboard application 
    - You can track deployment progress in the Actions tab
 
 ### API Documentation
