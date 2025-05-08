@@ -122,7 +122,9 @@ The application uses GitHub Actions for continuous integration and deployment:
 - Image Generation API documentation: http://localhost:8000/api/generate/docs
 
 
+## Contributors
 
-## 📄 License
+- Kenan Dervišagić ([@kenandervisagic](https://github.com/kenandervisagic))
+- Muamer Fatić ([@muamerfatic00](https://github.com/muamerfatic00))
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+
