@@ -17,18 +17,9 @@ function PostCard({ imageUrl, likes, timestamp, submission_id, username }) {
 
     const toggleLike = async () => {
         const newLiked = !liked;
-        setLiked(newLiked);
-        localStorage.setItem(`liked_${imageUrl}`, newLiked);
+        const likeAction = newLiked ? 'increase' : 'decrease';
 
-        if (newLiked) {
-            setAnimateLike(true);
-            setTimeout(() => setAnimateLike(false), 300);
-        }
-
-        // Call API to update like count in the backend-image-generation
         try {
-            const likeAction = newLiked ? 'increase' : 'decrease';
-
             const response = await fetch(`${apiBaseUrl}/api/core/like?submission_id=${submission_id}&like_action=${likeAction}`, {
                 method: 'POST',
                 headers: {
@@ -41,7 +32,17 @@ function PostCard({ imageUrl, likes, timestamp, submission_id, username }) {
             }
 
             const result = await response.json();
-            setCurrentLikes(result.likes); // Update the like count with the response from the backend-image-generation
+
+            // Only update state and localStorage if request succeeds
+            setLiked(newLiked);
+            localStorage.setItem(`liked_${imageUrl}`, newLiked);
+            setCurrentLikes(result.likes);
+
+            if (newLiked) {
+                setAnimateLike(true);
+                setTimeout(() => setAnimateLike(false), 300);
+            }
+
         } catch (error) {
             console.error("Error updating likes:", error);
         }
