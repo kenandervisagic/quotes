@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PostCard from "../PostCard/PostCard.jsx";
 import "./Gallery.css";
+import AdSlot from "../Add/AddSlot.jsx";
 
 function Gallery() {
     const [images, setImages] = useState([]);
@@ -129,16 +130,19 @@ function Gallery() {
                 </div>
             </div>
             <div className="quotes-boxes">
-                {images.map((img) => (
-                    <PostCard
-                        key={img.submission_id}
-                        submission_id={img.submission_id}
-                        imageUrl={img.thumbnail_url}
-                        username={img.username}
-                        timestamp={img.timestamp}
-                        likes={img.likes}
-                    />
+                {images.map((img, index) => (
+                    <React.Fragment key={img.submission_id}>
+                        <PostCard
+                            submission_id={img.submission_id}
+                            imageUrl={img.thumbnail_url}
+                            username={img.username}
+                            timestamp={img.timestamp}
+                            likes={img.likes}
+                        />
+                        {(index + 1) % 3 === 0 && <AdSlot />}
+                    </React.Fragment>
                 ))}
+
                 <div ref={observerRef} style={{ height: "20px" }} />
             </div>
             {isLoading && <p>Loading...</p>}
