@@ -9,7 +9,7 @@ function App() {
     return (
         <div className="app-container">
             <Header/>
-            <main className="main-content">
+            <main className="gallery">
                 <Gallery refreshKey={null}/>
             </main>
         </div>

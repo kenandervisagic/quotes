@@ -1,0 +1,256 @@
+
+.landing-page {
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+}
+
+section:first-of-type {
+    min-height: 90vh;
+}
+
+section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+}
+
+section:nth-of-type(even) {
+    background-color: var(--color-card-background);
+}
+
+section:nth-of-type(odd) {
+    background-color: var(--color-primary);
+}
+
+.hero-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.hero-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.hero-description {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    color: var(--color-text-muted);
+    max-width: 600px;
+    margin-inline: auto;
+}
+
+.cta-button {
+    display: inline-block; /* or inline-flex for vertical centering inside */
+    background-color: var(--color-button);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto; /* center button horizontally */
+}
+
+
+.cta-button:hover {
+    background-color: var(--color-button-hover);
+}
+
+.how-it-works {
+    text-align: center;
+}
+
+.how-it-works h2 {
+    margin-bottom: 2rem;
+    font-size: 1.75rem;
+}
+
+.steps {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .steps {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+.step {
+    text-align: center;
+    max-width: 300px;
+}
+
+.step h4 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.step p {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+}
+
+.value-proposition {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.value-proposition h4 {
+    text-align: center;
+    padding: 1rem 2rem;
+}
+
+
+.value-proposition p {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.featured-visuals {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.featured-visuals h3 {
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+}
+
+.image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.image-item {
+    text-align: center;
+    max-width: 300px;
+}
+
+.image-item img {
+    width: 100%;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 10px var(--color-shadow);
+}
+
+.image-item p {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin-top: 0.75rem;
+}
+
+.testimonials {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.testimonials h2 {
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+}
+
+.testimonial {
+    font-style: italic;
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto 2rem auto;
+    color: var(--color-text-muted);
+}
+
+.cta-section {
+    text-align: center;
+    min-height: 100vh;
+    padding: 4rem 2rem;
+}
+
+/* Quote of the Day */
+.quote-of-the-day {
+    background-color: var(--color-card-background);
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.daily-quote {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--color-text);
+    max-width: 700px;
+    margin: 0 auto;
+    line-height: 1.6;
+    font-style: italic;
+    position: relative;
+    padding: 1rem 1.5rem;
+}
+
+.daily-quote::before,
+.daily-quote::after {
+    content: '"';
+    font-size: 2rem;
+    color: var(--color-accent);
+}
+
+.quote-tagline {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+}
+
+/* Final Call To Action Section */
+.cta-section {
+    background-color: var(--color-primary);
+    color: var(--color-text);
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.cta-section h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.cta-section p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: var(--color-text-muted);
+}
+
+/* Gallery CTA Button */
+.featured-visuals .cta-button {
+    margin-top: 2rem;
+}
+
+/* Responsive spacing for mobile readability */
+@media (max-width: 600px) {
+    .hero-title {
+        font-size: 1.6rem;
+    }
+
+    .hero-description {
+        font-size: 1rem;
+    }
+
+    .daily-quote {
+        font-size: 1.25rem;
+    }
+
+    .cta-section h2 {
+        font-size: 1.6rem;
+    }
+}

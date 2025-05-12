@@ -1,8 +1,8 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PostCard from "../PostCard/PostCard.jsx";
 import "./Gallery.css";
 
-function Gallery({refreshKey}) {
+function Gallery() {
     const [images, setImages] = useState([]);
     const [nextStartAfter, setNextStartAfter] = useState(null); // { id, likes } or null
     const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +20,7 @@ function Gallery({refreshKey}) {
         setIsLoading(true);
 
         try {
-            const params = new URLSearchParams({limit: "5", sort: sortOrder});
+            const params = new URLSearchParams({ limit: "5", sort: sortOrder });
             if (startAfter?.id) {
                 params.append("start_after_id", startAfter.id);
                 if (sortOrder === "likes" && startAfter.likes !== undefined) {
@@ -40,7 +40,7 @@ function Gallery({refreshKey}) {
             });
 
             if (data.next_start_after_id) {
-                const next = {id: data.next_start_after_id};
+                const next = { id: data.next_start_after_id };
                 if (sortOrder === "likes" && data.next_start_after_likes !== undefined) {
                     next.likes = data.next_start_after_likes;
                 }
@@ -61,23 +61,22 @@ function Gallery({refreshKey}) {
 
     const handleSortChange = (newSort) => {
         setSortOrder(newSort);
-        setImages([]);
+        setImages([]); // Reset images when sort order changes
         setNextStartAfter(null);
         setHasMore(true);
         setSortMenuOpen(false);
     };
 
-    // Reset and fetch on sortOrder or refreshKey change
+    // Reset and fetch on sortOrder change
     useEffect(() => {
-        // Reset state on refreshKey change to ensure fresh data is fetched
+        // Reset state on sortOrder change to ensure fresh data is fetched
         setImages([]);
         setNextStartAfter(null);
         setHasMore(true);
 
         // Fetch new images
         fetchImages();
-    }, [sortOrder, refreshKey]);  // Trigger on sortOrder or refreshKey change
-
+    }, [sortOrder]); // Trigger on sortOrder change
 
     // Infinite scroll observer
     useEffect(() => {
@@ -87,7 +86,7 @@ function Gallery({refreshKey}) {
                     fetchImages(nextStartAfter);
                 }
             },
-            {threshold: 0.1}
+            { threshold: 0.1 }
         );
 
         if (observerRef.current) observer.observe(observerRef.current);
@@ -99,7 +98,7 @@ function Gallery({refreshKey}) {
     return (
         <div className="quotes-container">
             <div className="quotes-header">
-                <h2 className="section-title">Recent Submissions</h2>
+                <h2 className="section-title">Submissions</h2>
                 <div className="sort-wrapper">
                     <button className="sort-button" onClick={() => setSortMenuOpen(!sortMenuOpen)}>
                         <svg
@@ -140,7 +139,7 @@ function Gallery({refreshKey}) {
                         likes={img.likes}
                     />
                 ))}
-                <div ref={observerRef} style={{height: "20px"}}/>
+                <div ref={observerRef} style={{ height: "20px" }} />
             </div>
             {isLoading && <p>Loading...</p>}
             {fetchError && (

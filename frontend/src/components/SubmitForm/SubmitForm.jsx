@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import MessageForm from '../MessageForm/MessageForm.jsx';
-import SubmissionSuccess from "../SubmissionSuccess/SubmissionSuccess.jsx";
-import Footer from "../Footer/Footer.jsx";
-import Gallery from "../Gallery/Gallery.jsx";
+import MessageForm from '../../components/MessageForm/MessageForm.jsx';
+import SubmissionSuccess from "../../components/SubmissionSuccess/SubmissionSuccess.jsx";
 import { checkRateLimit, updateSubmissionHistory } from '../../utils/rateLimiting.js';
 
-import '../../App.css';
+import './SubmitForm.css';
 import "../../colors.css";
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://kdidp.art';
@@ -17,7 +15,6 @@ function MainContent() {
     const [countdown, setCountdown] = useState(0);
     const [userImageUrl, setUserImageUrl] = useState(null);
     const [error, setError] = useState(null);
-    const [refreshKey, setRefreshKey] = useState(0);
 
     useEffect(() => {
         const rateStatus = checkRateLimit();
@@ -63,7 +60,6 @@ function MainContent() {
                 setIsRateLimited(rateStatus.isLimited);
                 setCountdown(rateStatus.remainingCooldown);
 
-                setRefreshKey(prev => prev + 1);
             } else {
                 setError(data.error || "Failed to submit message.");
             }
@@ -88,7 +84,7 @@ function MainContent() {
     };
 
     return (
-        <main className="main-content">
+        <main className="submit-content">
             <div className="paper-card">
                 {submitted ? (
                     <SubmissionSuccess
@@ -113,10 +109,22 @@ function MainContent() {
                     </>
                 )}
 
-                <Footer />
+                <div className="footer-message">
+                    <p>
+                        Want to explore other anonymous messages? <br/>
+                        Check them out on our{' '}
+                        <a href="https://www.tiktok.com/@the_words_left_behind" target="_blank"
+                           rel="noopener noreferrer">
+                            TikTok
+                        </a>{' '}
+                        or{' '}
+                        <a href="https://www.instagram.com/the_words_left_behind" target="_blank"
+                           rel="noopener noreferrer">
+                            Instagram
+                        </a>.
+                    </p>
+                </div>
             </div>
-
-            <Gallery refreshKey={refreshKey} />
         </main>
     );
 }
