@@ -75,7 +75,7 @@ const LandingPage = () => {
                     Explore the Gallery
                 </a>
             </section>
-            
+
             {/* Final CTA */}
             <section className="cta-section" data-aos="fade-up">
                 <h2>Join the Movement</h2>
