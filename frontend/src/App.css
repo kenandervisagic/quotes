@@ -7,82 +7,17 @@
     padding: 0;
     box-sizing: border-box;
 }
-
-html, body {
+html {
+    overflow-x: hidden;
+}
+body {
     font-family: "Inter", sans-serif;
     font-optical-sizing: auto;
-    height: 100%;
-    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-}
-
-/* Main container with paper texture */
-.app-container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
     background-color: var(--color-primary);
     background-image: url("assets/light-paper-fibers.png");
-    position: relative;
-    overflow: hidden;
 }
 
 
-/* Main content area */
-.main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem 1.5rem;
-    position: relative;
-    z-index: 2;
-}
 
-/* Paper card container */
-.paper-card {
-    width: 100%;
-    max-width: 500px;
-    border-radius: 12px;
-    padding: 2rem;
-    background-color: var(--color-card-background);
-    box-shadow: 0 4px 20px var(--color-shadow);
-    position: relative;
-    z-index: 1;
-}
-
-/* Page title */
-.page-title {
-    font-size: 1rem;
-    color: var(--color-text-main);
-    margin-bottom: 1rem;
-    text-align: center;
-    line-height: 1.2;
-}
-
-
-.explanation {
-    font-size: 0.8rem;
-    color: var(--color-text-main);
-    margin-bottom: 1.5rem;
-    text-align: center;
-    line-height: 1.4;
-}
-
-
-/* Mobile responsiveness */
-@media (max-width: 600px) {
-    .paper-card {
-        padding: 1.5rem;
-    }
-
-    .page-title {
-        font-size: 1.1rem;
-    }
-
-    .explanation {
-        font-size: 0.8rem;
-    }
-
-}
