@@ -1,0 +1,12 @@
+@import '../PostCard/PostCard.css';
+
+.ad-slot {
+    height: auto;
+    min-height: 100px;
+}
+
+.ad-ins {
+    display: block;
+    width: 100%;
+    height: 100px;
+}
