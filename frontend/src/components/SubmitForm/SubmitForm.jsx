@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import MessageForm from '../../components/MessageForm/MessageForm.jsx';
 import SubmissionSuccess from "../../components/SubmissionSuccess/SubmissionSuccess.jsx";
-import { checkRateLimit, updateSubmissionHistory } from '../../utils/rateLimiting.js';
+import {checkRateLimit, updateSubmissionHistory} from '../../utils/rateLimiting.js';
 
 import './SubmitForm.css';
 import "../../colors.css";
@@ -15,6 +15,14 @@ function MainContent() {
     const [countdown, setCountdown] = useState(0);
     const [userImageUrl, setUserImageUrl] = useState(null);
     const [error, setError] = useState(null);
+
+    useEffect(() => {
+        try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+            console.error("AdSense error", e);
+        }
+    }, []);
 
     useEffect(() => {
         const rateStatus = checkRateLimit();
@@ -42,12 +50,12 @@ function MainContent() {
         setIsLoading(true);
         setError(null);
 
-        const payload = { content: message };
+        const payload = {content: message};
 
         try {
             const response = await fetch(`${apiBaseUrl}/api/generate/submit-message`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload),
             });
             const data = await response.json();
@@ -124,6 +132,15 @@ function MainContent() {
                         </a>.
                     </p>
                 </div>
+            </div>
+            <div className="under-submit-ad">
+                <ins className="adsbygoogle"
+                     style={{display: "block"}}
+                     data-ad-client="ca-pub-6798966945497866"
+                     data-ad-slot="7496407096"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true">
+                </ins>
             </div>
         </main>
     );
