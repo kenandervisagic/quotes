@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {Filter} from "bad-words";
 import {isUrl} from "../../utils/isUrl.js";
 import "./MessageForm.css"
+import SnackBar from "../SnackBar/SnackBar.jsx";
+
 function MessageForm({onSubmit, isLoading, isRateLimited, error, setError}) {
     const [message, setMessage] = useState('');
 
@@ -61,11 +63,9 @@ function MessageForm({onSubmit, isLoading, isRateLimited, error, setError}) {
                 />
             </div>
 
-            {error && (
-                <div className="error-color error-message">
-                    <p>{error}</p>
-                </div>
-            )}
+            {error &&
+                <SnackBar severity="error" message={error}/>
+            }
 
             {isRateLimited && (
                 <div className="rate-limit-message">
