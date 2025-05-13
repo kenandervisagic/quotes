@@ -130,7 +130,7 @@ function Gallery() {
                 </div>
             </div>
             <div className="quotes-boxes">
-                {images.map((img, index) => (
+                {images.map((img) => (
                     <React.Fragment key={img.submission_id}>
                         <PostCard
                             submission_id={img.submission_id}
