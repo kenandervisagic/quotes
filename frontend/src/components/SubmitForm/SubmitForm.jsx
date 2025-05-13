@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import MessageForm from '../../components/MessageForm/MessageForm.jsx';
 import SubmissionSuccess from "../../components/SubmissionSuccess/SubmissionSuccess.jsx";
 import {checkRateLimit, updateSubmissionHistory} from '../../utils/rateLimiting.js';
 
 import './SubmitForm.css';
 import "../../colors.css";
+import SnackBar from "../SnackBar/SnackBar.jsx";
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://kdidp.art';
 
@@ -15,6 +16,7 @@ function MainContent() {
     const [countdown, setCountdown] = useState(0);
     const [userImageUrl, setUserImageUrl] = useState(null);
     const [error, setError] = useState(null);
+
 
     useEffect(() => {
         try {
@@ -72,7 +74,8 @@ function MainContent() {
                 setError(data.error || "Failed to submit message.");
             }
         } catch (error) {
-            setError("Error submitting message. Please try again.");
+            setError("Error submitting message. Please refresh page.");
+
             console.error("Error:", error);
         } finally {
             setIsLoading(false);
@@ -95,12 +98,15 @@ function MainContent() {
         <main className="submit-content">
             <div className="paper-card">
                 {submitted ? (
-                    <SubmissionSuccess
-                        userImageUrl={userImageUrl}
-                        isRateLimited={isRateLimited}
-                        countdown={countdown}
-                        onSubmitAnother={handleSubmitAnother}
-                    />
+                    <>
+                        <SubmissionSuccess
+                            userImageUrl={userImageUrl}
+                            isRateLimited={isRateLimited}
+                            countdown={countdown}
+                            onSubmitAnother={handleSubmitAnother}
+                        />
+                        <SnackBar message="Successfully submitted message." severity="success"/>
+                    </>
                 ) : (
                     <>
                         <h2 className="page-title">Submit an Anonymous Message</h2>
@@ -115,8 +121,12 @@ function MainContent() {
                             setError={setError}
                         />
                     </>
-                )}
-
+                )
+                }
+                {
+                    error &&
+                    <SnackBar message="Something went wrong. Please try again." severity="error"/>
+                }
                 <div className="footer-message">
                     <p>
                         Want to explore other anonymous messages? <br/>
@@ -143,7 +153,8 @@ function MainContent() {
                 </ins>
             </div>
         </main>
-    );
+    )
+        ;
 }
 
 export default MainContent;
