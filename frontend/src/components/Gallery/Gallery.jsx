@@ -139,7 +139,6 @@ function Gallery() {
                             timestamp={img.timestamp}
                             likes={img.likes}
                         />
-                        {(index + 1) % 3 === 0 && <AdSlot />}
                     </React.Fragment>
                 ))}
 
