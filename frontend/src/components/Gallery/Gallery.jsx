@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import PostCard from "../PostCard/PostCard.jsx";
 import "./Gallery.css";
-import AdSlot from "../Ad/AdSlot.jsx";
+import SnackBar from "../SnackBar/SnackBar.jsx";
 
 function Gallery() {
     const [images, setImages] = useState([]);
@@ -21,7 +21,7 @@ function Gallery() {
         setIsLoading(true);
 
         try {
-            const params = new URLSearchParams({ limit: "5", sort: sortOrder });
+            const params = new URLSearchParams({limit: "5", sort: sortOrder});
             if (startAfter?.id) {
                 params.append("start_after_id", startAfter.id);
                 if (sortOrder === "likes" && startAfter.likes !== undefined) {
@@ -41,7 +41,7 @@ function Gallery() {
             });
 
             if (data.next_start_after_id) {
-                const next = { id: data.next_start_after_id };
+                const next = {id: data.next_start_after_id};
                 if (sortOrder === "likes" && data.next_start_after_likes !== undefined) {
                     next.likes = data.next_start_after_likes;
                 }
@@ -87,7 +87,7 @@ function Gallery() {
                     fetchImages(nextStartAfter);
                 }
             },
-            { threshold: 0.1 }
+            {threshold: 0.1}
         );
 
         if (observerRef.current) observer.observe(observerRef.current);
@@ -142,14 +142,14 @@ function Gallery() {
                     </React.Fragment>
                 ))}
 
-                <div ref={observerRef} style={{ height: "20px" }} />
+                <div ref={observerRef} style={{height: "20px"}}/>
             </div>
-            {isLoading && <p>Loading...</p>}
-            {fetchError && (
-                <div className="error-banner">
-                    <p>Something went wrong :(</p>
-                </div>
-            )}
+            {
+                isLoading && <p>Loading...</p>
+            }
+            {
+                fetchError && <SnackBar message="Something went wrong. Please try again." severity="error"/>
+            }
         </div>
     );
 }
