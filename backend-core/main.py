@@ -43,11 +43,11 @@ async def health():
 # Assuming submissions_collection is your MongoDB collection
 @api_router.get("/images")
 async def get_images(
-        limit: int = 5,
         sort: str = "date",
         start_after_id: str = None,
         start_after_likes: int = None
 ):
+    limit = 5
     try:
         # Validate sort parameter
         if sort not in ["date", "likes"]:
