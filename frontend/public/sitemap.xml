@@ -19,10 +19,4 @@
         <priority>0.9</priority>
     </url>
 
-    <url>
-        <loc>https://kdidp.art/instagram</loc>
-        <changefreq>monthly</changefreq>
-        <priority>0.5</priority>
-    </url>
-
 </urlset>
