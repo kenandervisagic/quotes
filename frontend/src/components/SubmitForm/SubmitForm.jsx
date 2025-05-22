@@ -51,9 +51,8 @@ function MainContent() {
     const handleSubmit = async (message) => {
         setIsLoading(true);
         setError(null);
-
+        //
         const payload = {content: message};
-
         try {
             const response = await fetch(`${apiBaseUrl}/api/generate/submit-message`, {
                 method: 'POST',
@@ -153,8 +152,7 @@ function MainContent() {
                 </ins>
             </div>
         </main>
-    )
-        ;
+    );
 }
 
 export default MainContent;
