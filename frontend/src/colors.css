@@ -1,11 +1,11 @@
 :root {
-    --color-primary: #f7eee8 ;
+    --color-primary: #f7eee8;
     /*Buttons*/
-    --color-button: #C2A88B ;
+    --color-button: #C2A88B;
     --color-button-hover: #D1B599;
     --color-button-disabled: #c0b5a5;
 
-    --color-card-background: #fffaf7 ;
+    --color-card-background: #fffaf7;
     --color-background-disabled: #e5dedf;
     --color-border: #d9bda5;
     --color-border-hover: #c8ac96;
@@ -20,7 +20,7 @@
     --color-blur-border: rgba(164, 120, 100, 0.3);
     --color-rate-limit-bg: rgba(208, 176, 158, 0.3);
     /* Header Colors */
-    --color-header-bg: #d9bda5  ;
+    --color-header-bg: #d9bda5;
     --color-header-border: #A47864;
     /* Text Colors */
     --color-text-main: #333;
@@ -29,4 +29,15 @@
     --color-text-light-alpha: #8888;
     --color-text-accent: #85614f;
 
+    --color-success: #A3C6A0; /* Background / UI */
+    --color-success-border: #7BA97A; /* Border */
+    --color-success-text: #3C5C3B; /* Text */
+
+    --color-warning: #E8C28C;
+    --color-warning-border: #D0A960;
+    --color-warning-text: #7B5C2D;
+
+    --color-info: #B6CAD4;
+    --color-info-border: #8FA8B4;
+    --color-info-text: #4B5F66;
 }
