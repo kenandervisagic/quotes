@@ -19,7 +19,7 @@ function Gallery({ refreshKey }) {
         setIsLoading(true);
 
         try {
-            const params = new URLSearchParams({ limit: "5", sort: sortOrder });
+            const params = new URLSearchParams({limit: "5", sort: sortOrder});
             if (startAfter?.id) {
                 params.append("start_after_id", startAfter.id);
                 if (sortOrder === "likes" && startAfter.likes !== undefined) {
@@ -39,7 +39,7 @@ function Gallery({ refreshKey }) {
             });
 
             if (data.next_start_after_id) {
-                const next = { id: data.next_start_after_id };
+                const next = {id: data.next_start_after_id};
                 if (sortOrder === "likes" && data.next_start_after_likes !== undefined) {
                     next.likes = data.next_start_after_likes;
                 }
