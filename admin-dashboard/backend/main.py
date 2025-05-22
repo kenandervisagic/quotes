@@ -38,7 +38,6 @@ async def get_images(
         start_after_likes: int = None
 ):
     try:
-        # Validate sort parameter
         if sort not in ["date", "likes"]:
             raise HTTPException(status_code=400, detail="Invalid sort parameter. Must be 'date' or 'likes'.")
 

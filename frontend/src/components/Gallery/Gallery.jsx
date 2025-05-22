@@ -21,7 +21,7 @@ function Gallery() {
         setIsLoading(true);
 
         try {
-            const params = new URLSearchParams({limit: "5", sort: sortOrder});
+            const params = new URLSearchParams({ sort: sortOrder });
             if (startAfter?.id) {
                 params.append("start_after_id", startAfter.id);
                 if (sortOrder === "likes" && startAfter.likes !== undefined) {
