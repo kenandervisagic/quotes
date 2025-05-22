@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import "./SubmissionSuccess.css"
+import SnackBar from "../SnackBar/SnackBar.jsx";
 
 function SubmissionSuccess({userImageUrl, isRateLimited, countdown, onSubmitAnother}) {
-
+    const [isDownloaded, setIsDownloaded] = useState(false)
     const handleDownload = async () => {
         try {
             const response = await fetch(userImageUrl, {mode: 'cors'});
@@ -17,40 +18,43 @@ function SubmissionSuccess({userImageUrl, isRateLimited, countdown, onSubmitAnot
             document.body.removeChild(link);
 
             window.URL.revokeObjectURL(blobUrl); // cleanup
+            setIsDownloaded(true)
         } catch (err) {
             console.error("Download failed:", err);
         }
     };
     return (
-        <div className="thank-you-message">
-            <h3>Thank you for your message!</h3>
-            <p>Your words have been left behind.</p>
+        <>
+            <div className="thank-you-message">
+                <h3>Thank you for your message!</h3>
+                <p>Your words have been left behind.</p>
 
-            {userImageUrl && (
-                <div>
-                    <img src={userImageUrl} alt="Generated Quote" className="user-image"/>
+                {userImageUrl && (
+                    <div>
+                        <img src={userImageUrl} alt="Generated Quote" className="user-image"/>
+                    </div>
+                )}
+                <div className="button-container">
+                    <button
+                        onClick={handleDownload}
+                        className="submit-button-again"
+                    >
+                        Download
+                    </button>
+                    <p>or</p>
+                    <button
+                        onClick={onSubmitAnother}
+                        className="submit-button-again"
+                        disabled={isRateLimited}
+                    >
+                        {isRateLimited
+                            ? `Please wait ${Math.ceil(countdown / 1000)} seconds`
+                            : "Submit another message"}
+                    </button>
                 </div>
-            )}
-            <div className="button-container">
-                <button
-                    onClick={handleDownload}
-                    className="submit-button-again"
-                >
-                    Download
-                </button>
-                <p>or</p>
-                <button
-                    onClick={onSubmitAnother}
-                    className="submit-button-again"
-                    disabled={isRateLimited}
-                >
-                    {isRateLimited
-                        ? `Please wait ${Math.ceil(countdown / 1000)} seconds`
-                        : "Submit another message"}
-                </button>
             </div>
-
-        </div>
+            {isDownloaded && <SnackBar severity="success" message="Image downloaded."/>}
+        </>
     );
 }
 
