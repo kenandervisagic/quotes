@@ -3,7 +3,7 @@ import PostCard from "../PostCard/PostCard.jsx";
 import "./Gallery.css";
 import SnackBar from "../SnackBar/SnackBar.jsx";
 
-function Gallery() {
+function Gallery({setIsDownloaded, setIsCopied, setError}) {
     const [images, setImages] = useState([]);
     const [nextStartAfter, setNextStartAfter] = useState(null); // { id, likes } or null
     const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +21,7 @@ function Gallery() {
         setIsLoading(true);
 
         try {
-            const params = new URLSearchParams({ sort: sortOrder });
+            const params = new URLSearchParams({sort: sortOrder});
             if (startAfter?.id) {
                 params.append("start_after_id", startAfter.id);
                 if (sortOrder === "likes" && startAfter.likes !== undefined) {
@@ -98,6 +98,7 @@ function Gallery() {
 
     return (
         <div className="quotes-container">
+
             <div className="quotes-header">
                 <h2 className="section-title">Submissions</h2>
                 <div className="sort-wrapper">
@@ -130,9 +131,13 @@ function Gallery() {
                 </div>
             </div>
             <div className="quotes-boxes">
+
                 {images.map((img) => (
                     <React.Fragment key={img.submission_id}>
                         <PostCard
+                            setIsDownloaded={setIsDownloaded}
+                            setError={setError}
+                            setIsCopied={setIsCopied}
                             submission_id={img.submission_id}
                             imageUrl={img.thumbnail_url}
                             username={img.username}
