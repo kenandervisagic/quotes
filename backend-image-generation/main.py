@@ -34,6 +34,7 @@ MINIO_BUCKET_NAME = os.getenv("MINIO_BUCKET_NAME", "thumbnails")
 FONT_PATH = os.getenv("FONT_PATH", "ReenieBeanie-Regular.ttf")
 ENVIRONMENT = os.getenv("ENVIRONMENT", "")
 
+
 # Minio client
 minio_client = Minio(
     MINIO_URL,
@@ -41,6 +42,28 @@ minio_client = Minio(
     secret_key=MINIO_SECRET_KEY,
     secure=(ENVIRONMENT != "local"),
 )
+
+
+try:
+    if not minio_client.bucket_exists(MINIO_BUCKET_NAME):
+        minio_client.make_bucket(MINIO_BUCKET_NAME)
+        logger.info(f"Created bucket: {MINIO_BUCKET_NAME}")
+        public_policy = {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Action": ["s3:GetObject"],
+                    "Effect": "Allow",
+                    "Principal": {"AWS": ["*"]},
+                    "Resource": [f"arn:aws:s3:::{MINIO_BUCKET_NAME}/*"]
+                }
+            ]
+        }
+        import json
+        minio_client.set_bucket_policy(MINIO_BUCKET_NAME, json.dumps(public_policy))
+        logger.info(f"Set public read-only policy for bucket: {MINIO_BUCKET_NAME}")
+except Exception as e:
+    logger.error(f"Error setting up MinIO bucket or policy: {e}")
 
 
 class Message(BaseModel):
