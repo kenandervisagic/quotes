@@ -27,3 +27,5 @@ dist-ssr
 !/backend-image-generation/env/
 /backend-image-generation/.venv/
 /backend-core/venv/
+.env
+
