@@ -66,8 +66,12 @@ The application follows a microservices architecture:
    ```bash
    docker-compose -f docker-compose-local.yaml up
    ```
+3. Prepare the env variables:
+   ```bash
+   cp env.example .env
+   ```
 
-3. Access the application:
+4. Access the application:
    - Frontend: http://localhost:3000
    - Admin Panel: http://localhost:3001
    - Core API: http://localhost:8000/api/core
