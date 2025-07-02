@@ -61,14 +61,14 @@ The application follows a microservices architecture:
    git clone https://github.com/kenandervisagic/quotes.git
    cd quotes
    ```
-
-2. Start the application using Docker Compose:
-   ```bash
-   docker-compose -f docker-compose-local.yaml up
-   ```
-3. Prepare the env variables:
+2. Prepare the env variables:
    ```bash
    cp env.example .env
+   ```
+
+3. Start the application using Docker Compose:
+   ```bash
+   docker-compose -f docker-compose-local.yaml up
    ```
 
 4. Access the application:
