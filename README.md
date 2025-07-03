@@ -23,8 +23,11 @@ An application for anonymously sharing messages and quotes with others. Post tho
 
 ## 🛠️ Tech Stack
 
-This is the main app repository.  
-DevOps infrastructure (CI/CD, monitoring, reverse proxy, etc.) lives in a **separate private repo**.
+## 🏗️ Architecture
+
+This repository contains the full-stack application code.  
+For infrastructure, deployment, and monitoring setup, see the [DevOps repository](https://github.com/your-username/devops-infra).
+
 
 ### Frontend
 - React with Vite
