@@ -1,0 +1,123 @@
+services:
+  frontend-admin:
+    build:
+      context: ./admin-dashboard/frontend
+      dockerfile: local.Dockerfile
+    container_name: frontend-admin
+    volumes:
+      - ./admin-dashboard/frontend:/app
+      - /app/node_modules
+    env_file:
+      - .env
+    ports:
+      - "3001:3001"
+    networks:
+      - webnet
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: local.Dockerfile
+    container_name: react-frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    env_file:
+      - .env.local
+      - .env
+    ports:
+      - "3000:3000"
+    networks:
+      - webnet
+
+  backend-admin:
+    build:
+      context: ./admin-dashboard/backend
+      dockerfile: local.Dockerfile
+    container_name: backend-admin
+    volumes:
+      - ./admin-dashboard/backend:/app
+    expose:
+      - "8000"
+    env_file:
+      - .env
+    networks:
+      - webnet
+    restart: on-failure
+
+  backend-image-generation:
+    build:
+      context: backend-image-generation
+      dockerfile: local.Dockerfile
+    container_name: image-generation
+    volumes:
+      - ./backend-image-generation:/app
+    expose:
+      - "8000"
+    env_file:
+      - .env
+    networks:
+      - webnet
+    restart: on-failure
+
+  backend-core:
+    build:
+      context: backend-core
+      dockerfile: local.Dockerfile
+    container_name: python-core
+    volumes:
+      - ./backend-core:/app
+    expose:
+      - "8000"
+    env_file:
+      - .env
+    networks:
+      - webnet
+    restart: on-failure
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9001:9001"
+      - "9000:9000"
+    env_file:
+      - .env
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - webnet
+    restart: always
+
+  mongodb:
+    image: mongo:6
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    env_file:
+      - .env
+    command: ["mongod", "--quiet"]
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - webnet
+    restart: always
+
+  nginx-gateway:
+    build:
+      context: .nginx-local/
+    container_name: nginx-gateway
+    ports:
+      - "8000:8000"
+    networks:
+      - webnet
+    restart: always
+
+networks:
+  webnet:
+
+volumes:
+  minio_data:
+  mongo_data:
+
