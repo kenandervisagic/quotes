@@ -23,6 +23,9 @@ An application for anonymously sharing messages and quotes with others. Post tho
 
 ## 🛠️ Tech Stack
 
+This is the main app repository.  
+DevOps infrastructure (CI/CD, monitoring, reverse proxy, etc.) lives in a **separate private repo**.
+
 ### Frontend
 - React with Vite
 - JavaScript
