@@ -9,6 +9,9 @@
 
 An application for anonymously sharing messages and quotes with others. Post thoughts, inspirations, or memorable quotes without revealing your identity.
 
+## Check it out:
+[Visit The Words Left Behind](https://kdidp.art)
+
 ## 🚀 Features
 
 - Post anonymous messages and quotes
@@ -19,6 +22,12 @@ An application for anonymously sharing messages and quotes with others. Post tho
 - Real-time notifications
 
 ## 🛠️ Tech Stack
+
+## 🏗️ Architecture
+
+This repository contains the full-stack application code.  
+For infrastructure, deployment, and monitoring setup, see the [DevOps repository](https://github.com/kenandervisagic/quotes-infra).
+
 
 ### Frontend
 - React with Vite
