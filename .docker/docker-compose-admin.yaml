@@ -34,6 +34,7 @@ services:
       - /home/ubuntu/website/logs:/var/log/nginx
       - /home/ubuntu/website/nginx/certificates:/etc/letsencrypt
       - /home/ubuntu/website/nginx/certificates-data:/data/certbot
+      - /home/ubuntu/certificates:/data/certificates
     networks:
       vpn_custom_network:
         ipv4_address: 10.13.14.10
