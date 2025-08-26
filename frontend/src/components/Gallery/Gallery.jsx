@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PostCard from "../PostCard/PostCard.jsx";
 import "./Gallery.css";
-import AdSlot from "../Ad/AdSlot.jsx";
 
 function Gallery() {
     const [images, setImages] = useState([]);
