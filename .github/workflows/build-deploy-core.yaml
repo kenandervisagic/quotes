@@ -1,4 +1,5 @@
-name: Docker CI/CD
+name: Build Deploy Core App
+
 
 on:
   push:

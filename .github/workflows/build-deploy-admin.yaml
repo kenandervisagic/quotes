@@ -1,4 +1,4 @@
-name: Docker CI/CD
+name: Build Deploy Admin App
 
 on:
   push:
