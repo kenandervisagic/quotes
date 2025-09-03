@@ -4,6 +4,7 @@ import "./Gallery.css";
 
 function Gallery() {
     const [images, setImages] = useState([]);
+
     const [nextStartAfter, setNextStartAfter] = useState(null); // { id, likes } or null
     const [isLoading, setIsLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
