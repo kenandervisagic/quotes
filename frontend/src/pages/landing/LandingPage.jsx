@@ -16,7 +16,7 @@ const LandingPage = () => {
             <meta name="robots" content="index, follow" />
             
             {/* Open Graph tags for social sharing */}
-            <meta property="og:title" content="KDidP Art - Express Your Thoughts Through Anonymous Art" />
+            <meta property="og:title" content="KDIDP Art - Express Your Thoughts Through Anonymous Art" />
             <meta property="og:description" content="Transform your anonymous thoughts into beautiful visual art. Share your story and let it resonate with others." />
             <meta property="og:url" content="https://kdidp.art/" />
             <meta property="og:type" content="website" />

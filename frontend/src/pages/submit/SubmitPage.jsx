@@ -8,7 +8,7 @@ function BrowsePage() {
             <meta name="description" content="Share your anonymous thoughts and transform them into beautiful visual art. No names, no judgment - just expression." />
             <link rel="canonical" href="https://kdidp.art/submit" />
             <meta name="robots" content="index, follow" />
-            <meta property="og:title" content="Submit Your Thought - KDidP Art" />
+            <meta property="og:title" content="Submit Your Thought - KDIDP Art" />
             <meta property="og:description" content="Share your anonymous thoughts and transform them into beautiful visual art." />
             <meta property="og:url" content="https://kdidp.art/submit" />
                 <SubmitForm />
