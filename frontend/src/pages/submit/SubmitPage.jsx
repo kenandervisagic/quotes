@@ -3,7 +3,16 @@ import SubmitForm from "../../components/SubmitForm/SubmitForm.jsx";
 
 function BrowsePage() {
     return (
-        <SubmitForm/>
+        <>
+            <title>Submit Your Thought - KDidP Art</title>
+            <meta name="description" content="Share your anonymous thoughts and transform them into beautiful visual art. No names, no judgment - just expression." />
+            <link rel="canonical" href="https://kdidp.art/submit" />
+            <meta name="robots" content="index, follow" />
+            <meta property="og:title" content="Submit Your Thought - KDidP Art" />
+            <meta property="og:description" content="Share your anonymous thoughts and transform them into beautiful visual art." />
+            <meta property="og:url" content="https://kdidp.art/submit" />
+                <SubmitForm />
+        </>
     );
 }
 
