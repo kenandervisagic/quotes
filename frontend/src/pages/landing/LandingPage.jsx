@@ -10,13 +10,13 @@ const LandingPage = () => {
 
     return (
         <>
-            <title>KDidP Art - Express Your Thoughts Through Anonymous Art</title>
+            <title>The Words Left Behind </title>
             <meta name="description" content="Transform your anonymous thoughts into beautiful visual art. Share your story at The Words Left Behind and let it resonate with others." />
             <link rel="canonical" href="https://thewordsleftbehind.com/" />
             <meta name="robots" content="index, follow" />
 
             {/* Open Graph tags for social sharing */}
-            <meta property="og:title" content="KDIDP Art - Express Your Thoughts Through Anonymous Art" />
+            <meta property="og:title" content="The Words Left Behind - Express Your Thoughts Through Anonymous Art" />
             <meta property="og:description" content="Transform your anonymous thoughts into beautiful visual art. Share your story and let it resonate with others." />
             <meta property="og:url" content="https://thewordsleftbehind.com/" />
             <meta property="og:type" content="website" />
@@ -24,7 +24,7 @@ const LandingPage = () => {
 
             {/* Twitter Card tags */}
             <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:title" content="KDidP Art - Express Your Thoughts Through Anonymous Art" />
+            <meta name="twitter:title" content="The Words Left Behind - Express Your Thoughts Through Anonymous Art" />
             <meta name="twitter:description" content="Transform your anonymous thoughts into beautiful visual art." />
             <meta name="twitter:image" content="https://minio.thewordsleftbehind.com/thumbnails/68126baac783f4d08b9e8098.webp" />
             <div className="landing-page">
