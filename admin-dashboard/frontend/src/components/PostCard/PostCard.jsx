@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './PostCard.css';
 import noImage from '../../assets/no-picture.jpg'
 import { formatDate } from "../../utils/dateFormat.js";
-function PostCard({ imageUrl, likes, timestamp, submission_id, downloadUrl, username, onDelete  }) {
+function PostCard({ imageUrl, likes, timestamp, submission_id, downloadUrl, username, onDelete }) {
 
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://internal.kdidp.art';
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://internal.thewordsleftbehind.com';
 
     const handleDelete = async () => {
         if (!submission_id) {
@@ -35,7 +35,7 @@ function PostCard({ imageUrl, likes, timestamp, submission_id, downloadUrl, user
         <div className="post-card">
             <div className="post-card-header">
                 <div className="post-card-header-inline">
-                    <img src={noImage} alt="profile-picture"/>
+                    <img src={noImage} alt="profile-picture" />
                     <p>{username}</p>
                 </div>
             </div>

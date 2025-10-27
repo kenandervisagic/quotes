@@ -61,7 +61,7 @@ class Message(BaseModel):
 if ENVIRONMENT == "local":
     origins = ["*"]
 else:
-    origins = ["https://kdidp.art", "https://www.kdidp.art"]
+    origins = ["https://thewordsleftbehind.com", "https://www.thewordsleftbehind.com"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -143,7 +143,7 @@ def upload_image_to_minio(image_io: BytesIO, filename: str, bucket_name: str, co
     if ENVIRONMENT == "local":
         minio_url = "localhost:9000"  # Local Minio URL
     else:
-        minio_url = "minio.kdidp.art"  # Production Minio URL
+        minio_url = "minio.thewordsleftbehind.com"  # Production Minio URL
 
     # Upload the image to Minio
     minio_client.put_object(

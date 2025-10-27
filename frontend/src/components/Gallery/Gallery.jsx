@@ -12,7 +12,7 @@ function Gallery() {
     const [sortMenuOpen, setSortMenuOpen] = useState(false);
     const observerRef = useRef(null);
     const isFetchingRef = useRef(false);
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://kdidp.art";
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || "https://thewordsleftbehind.com";
 
     const fetchImages = async (startAfter = null) => {
         if (isFetchingRef.current || !hasMore || fetchError) return; // 👈 block on error
@@ -107,7 +107,7 @@ function Gallery() {
                             viewBox="0 0 24 24"
                             fill="currentColor"
                         >
-                            <path d="M3 5h18v2H3V5zm4 6h10v2H7v-2zm2 6h6v2H9v-2z"/>
+                            <path d="M3 5h18v2H3V5zm4 6h10v2H7v-2zm2 6h6v2H9v-2z" />
                         </svg>
                     </button>
                     {sortMenuOpen && (

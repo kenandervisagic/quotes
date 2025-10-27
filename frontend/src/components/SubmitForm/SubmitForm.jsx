@@ -1,12 +1,12 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import MessageForm from '../../components/MessageForm/MessageForm.jsx';
 import SubmissionSuccess from "../../components/SubmissionSuccess/SubmissionSuccess.jsx";
-import {checkRateLimit, updateSubmissionHistory} from '../../utils/rateLimiting.js';
+import { checkRateLimit, updateSubmissionHistory } from '../../utils/rateLimiting.js';
 
 import './SubmitForm.css';
 import "../../colors.css";
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://kdidp.art';
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://thewordsleftbehind.com';
 
 function MainContent() {
     const [isLoading, setIsLoading] = useState(false);
@@ -50,12 +50,12 @@ function MainContent() {
         setIsLoading(true);
         setError(null);
 
-        const payload = {content: message};
+        const payload = { content: message };
 
         try {
             const response = await fetch(`${apiBaseUrl}/api/generate/submit-message`, {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
             });
             const data = await response.json();
@@ -119,15 +119,15 @@ function MainContent() {
 
                 <div className="footer-message">
                     <p>
-                        Want to explore other anonymous messages? <br/>
+                        Want to explore other anonymous messages? <br />
                         Check them out on our{' '}
                         <a href="https://www.tiktok.com/@the_words_left_behind" target="_blank"
-                           rel="noopener noreferrer">
+                            rel="noopener noreferrer">
                             TikTok
                         </a>{' '}
                         or{' '}
                         <a href="https://www.instagram.com/the_words_left_behind" target="_blank"
-                           rel="noopener noreferrer">
+                            rel="noopener noreferrer">
                             Instagram
                         </a>.
                     </p>
@@ -135,11 +135,11 @@ function MainContent() {
             </div>
             <div className="under-submit-ad">
                 <ins className="adsbygoogle"
-                     style={{display: "block"}}
-                     data-ad-client="ca-pub-6798966945497866"
-                     data-ad-slot="7496407096"
-                     data-ad-format="auto"
-                     data-full-width-responsive="true">
+                    style={{ display: "block" }}
+                    data-ad-client="ca-pub-6798966945497866"
+                    data-ad-slot="7496407096"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true">
                 </ins>
             </div>
         </main>

@@ -8,7 +8,7 @@ function PostCard({ imageUrl, likes, timestamp, submission_id, username }) {
     const [animateLike, setAnimateLike] = useState(false);
     const [animateShare, setAnimateShare] = useState(false);
     const [copied, setCopied] = useState(false); // For showing "Copied" feedback
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://kdidp.art';
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'https://thewordsleftbehind.com';
 
     useEffect(() => {
         const stored = localStorage.getItem(`liked_${imageUrl}`);
@@ -83,7 +83,7 @@ function PostCard({ imageUrl, likes, timestamp, submission_id, username }) {
         <div className="post-card">
             <div className="post-card-header">
                 <div className="post-card-header-inline">
-                    <img src={noImage} alt="profile-picture"/>
+                    <img src={noImage} alt="profile-picture" />
                     <p>{username}</p>
                 </div>
             </div>
@@ -112,7 +112,7 @@ function PostCard({ imageUrl, likes, timestamp, submission_id, username }) {
                         aria-label="Share button"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#888"
-                             viewBox="0 0 24 24">
+                            viewBox="0 0 24 24">
                             <path
                                 d="M19 22H5c-1.654 0-3-1.346-3-3V8h2v11c0 .552.449 1 1 1h14c.552 0 1-.448 1-1v-2h2v2C22 20.654 20.654 22 19 22zM16.707 11.707L15.293 10.293 18.586 7 15.293 3.707 16.707 2.293 21.414 7z"></path>
                             <path d="M8,18H6v-1c0-6.065,4.935-11,11-11h3v2h-3c-4.963,0-9,4.037-9,9V18z"></path>
@@ -124,7 +124,7 @@ function PostCard({ imageUrl, likes, timestamp, submission_id, username }) {
                 <button onClick={handleDownload} className="download-button" aria-label="Download button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#888" viewBox="0 0 24 24">
                         <path
-                            d="M12 16a1 1 0 0 1-.7-.3l-5-5 1.4-1.4L11 12.59V3h2v9.59l3.3-3.3 1.4 1.42-5 5a1 1 0 0 1-.7.29zM5 18h14v2H5z"/>
+                            d="M12 16a1 1 0 0 1-.7-.3l-5-5 1.4-1.4L11 12.59V3h2v9.59l3.3-3.3 1.4 1.42-5 5a1 1 0 0 1-.7.29zM5 18h14v2H5z" />
                     </svg>
                 </button>
             </div>

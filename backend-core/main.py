@@ -23,7 +23,7 @@ ENVIRONMENT = os.getenv("ENVIRONMENT", "")
 if ENVIRONMENT == "local":
     origins = ["*"]
 else:
-    origins = ["https://kdidp.art", "https://www.kdidp.art"]
+    origins = ["https://thewordsleftbehind.com", "https://www.thewordsleftbehind.com"]
 
 app.add_middleware(
     CORSMiddleware,
